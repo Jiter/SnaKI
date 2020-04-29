@@ -50,8 +50,9 @@ class snake(object):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
- 
+
             keys = pygame.key.get_pressed()
+            print(keys)
  
             for key in keys:
                 if keys[pygame.K_LEFT]:
@@ -128,6 +129,7 @@ def drawGrid(w, rows, surface):
  
     x = 0
     y = 0
+
     for l in range(rows):
         x = x + sizeBtwn
         y = y + sizeBtwn
@@ -141,7 +143,7 @@ def redrawWindow(surface):
     surface.fill((0,0,0))
     s.draw(surface)
     snack.draw(surface)
-    drawGrid(width,rows, surface)
+    drawGrid(width, rows, surface)
     pygame.display.update()
  
  
