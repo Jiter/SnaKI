@@ -11,4 +11,3 @@ python3 -m pip install -U pygame --user
 ### Install tkinter
 
 conda install -c anaconda tk
-
