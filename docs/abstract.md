@@ -4,7 +4,7 @@ Miroslav Andjelkovic, Alexander Haaf, Maurus Manatschal, David Bloch
 
 ## Abstract 
 
-Für das KI-Labor als Wahlfach im Sommersemester 2020 bei Prof. Dr.-Ing. habil. Catherina Burghart
+Für das KI-Labor als Wahlfach im Sommersemester 2020 bei Prof. Dr.-Ing. habil. Catherina Burghart.
 
 Ziel des Projekts ist es künstliche Intelligenz in einem Projekt anzuwenden und so erste Erfahrungen zu sammeln.
 Als passendes Projekt haben die Studierenden sich das Ziel gesetzt das bekannte Computerspiel "Snake" von einer KI erlernen zu lassen.
@@ -15,7 +15,7 @@ Ebenso sollen in der Arbeit auch verschieden KI-Frameworks betrachtet und nach K
 
 ## Grundlagen
 
-Grundsätzliche Technologieren welche zum Einsatz kommen sind:
+Grundsätzliche Technologien welche zum Einsatz kommen:
 
 - Deep Learning
 - Genetische Algorithmen
@@ -23,9 +23,14 @@ Grundsätzliche Technologieren welche zum Einsatz kommen sind:
 
 ## Arbeitspakete
 
-- [ ] Einrichtung der Umgebung
+- [ ] Einrichtung der Arbeitsumgebung
 - [ ] Programmierung von Snake
-- [ ] Auswahl eines KI Frameworks 
+- [ ] Planung der Softwarestruktur
+- [ ] Auswahl eines KI Frameworks
+- [ ] Auswahl der Algorithmen
+- [ ] Umsetzung
+- [ ] Auswertung 
+- [ ] Vergleich
 
 ## Output
 
