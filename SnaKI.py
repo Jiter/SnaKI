@@ -83,10 +83,30 @@ class snake(object):
                 if i == len(self.body)-1:
                     self.turns.pop(p)
             else:
-                if c.dirnx == -1 and c.pos[0] <= 0: c.pos = (c.rows-1, c.pos[1])
-                elif c.dirnx == 1 and c.pos[0] >= c.rows-1: c.pos = (0,c.pos[1])
-                elif c.dirny == 1 and c.pos[1] >= c.rows-1: c.pos = (c.pos[0], 0)
-                elif c.dirny == -1 and c.pos[1] <= 0: c.pos = (c.pos[0],c.rows-1)
+                if c.dirnx == -1 and c.pos[0] <= 0:
+                    print("Score: ", len(s.body))
+                    message_box("You Lost!", "Play again...")
+                    s.reset((10, 10)) 
+                    break
+                    # c.pos = (c.rows-1, c.pos[1])    #
+                elif c.dirnx == 1 and c.pos[0] >= c.rows-1:
+                    print("Score: ", len(s.body))
+                    message_box("You Lost!", "Play again...")
+                    s.reset((10, 10)) 
+                    break
+                    # c.pos = (0,c.pos[1])            #
+                elif c.dirny == 1 and c.pos[1] >= c.rows-1:
+                    print("Score: ", len(s.body))
+                    message_box("You Lost!", "Play again...")
+                    s.reset((10, 10)) 
+                    break
+                    # c.pos = (c.pos[0], 0)           #
+                elif c.dirny == -1 and c.pos[1] <= 0:
+                    print("Score: ", len(s.body))
+                    message_box("You Lost!", "Play again...")
+                    s.reset((10, 10)) 
+                    break
+                    # c.pos = (c.pos[0],c.rows-1)     #
                 else: c.move(c.dirnx,c.dirny)
        
  
