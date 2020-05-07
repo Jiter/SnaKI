@@ -52,7 +52,7 @@ class snake(object):
                 pygame.quit()
 
             keys = pygame.key.get_pressed()
-            print(keys)
+            #print(keys)
  
             for key in keys:
                 if keys[pygame.K_LEFT]:
@@ -83,11 +83,13 @@ class snake(object):
                 if i == len(self.body)-1:
                     self.turns.pop(p)
             else:
+                ''' Must be commented out, otherwise the snake will go through the walls
                 if c.dirnx == -1 and c.pos[0] <= 0: c.pos = (c.rows-1, c.pos[1])
                 elif c.dirnx == 1 and c.pos[0] >= c.rows-1: c.pos = (0,c.pos[1])
                 elif c.dirny == 1 and c.pos[1] >= c.rows-1: c.pos = (c.pos[0], 0)
                 elif c.dirny == -1 and c.pos[1] <= 0: c.pos = (c.pos[0],c.rows-1)
-                else: c.move(c.dirnx,c.dirny)
+                else: c.move(c.dirnx,c.dirny)'''
+                c.move(c.dirnx, c.dirny)
        
  
     def reset(self, pos):
@@ -191,9 +193,16 @@ def main():
         if s.body[0].pos == snack.pos:
             s.addCube()
             snack = cube(randomSnack(rows, s), color=(0,255,0))
- 
+
+        print(s.body[0].pos)
+
         for x in range(len(s.body)):
-            if s.body[x].pos in list(map(lambda z:z.pos,s.body[x+1:])):
+            if s.body[x].pos in list(map(lambda z:z.pos,s.body[x+1:]))\
+                    or s.body[x].pos[0] < 0\
+                    or s.body[x].pos[0] > 19 \
+                    or s.body[x].pos[1] < 0 \
+                    or s.body[x].pos[1] > 19:
+
                 print("Score: ", len(s.body))
                 message_box("You Lost!", "Play again...")
                 s.reset((10, 10))
