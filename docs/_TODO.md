@@ -2,9 +2,9 @@
 
 ## 07.05.2020 - 21.05.2020
 
-- [ ] Frameworks aussuchen und bewerten - **Maurus**
+- [x] Frameworks aussuchen und bewerten - **Maurus**
 - [ ] KI Methoden aufstellen und bewerten - **Miroslav, Maurus, Alex, David**
-- [ ] Abstract an Burkhart schicken + Kickoff Meeting vereinbaren - **David**
+- [x] Abstract an Burkhart schicken + Kickoff Meeting vereinbaren - **David**
 
 ---
 
