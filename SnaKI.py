@@ -5,7 +5,13 @@ import random
 import pygame
 import tkinter as tk
 from tkinter import messagebox
- 
+
+import numpy as np
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+import random
+
 class cube(object):
     rows = 20
     w = 500
@@ -45,7 +51,12 @@ class snake(object):
         self.body.append(self.head)
         self.dirnx = 0
         self.dirny = 1
- 
+
+    def turn(self, x, y):
+        self.dirnx = x
+        self.dirny = y
+        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+
     def move(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -56,24 +67,16 @@ class snake(object):
  
             for key in keys:
                 if keys[pygame.K_LEFT]:
-                    self.dirnx = -1
-                    self.dirny = 0
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+                    self.turn(-1, 0)
  
                 elif keys[pygame.K_RIGHT]:
-                    self.dirnx = 1
-                    self.dirny = 0
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+                    self.turn(1, 0)
  
                 elif keys[pygame.K_UP]:
-                    self.dirnx = 0
-                    self.dirny = -1
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+                    self.turn(0, -1)
  
                 elif keys[pygame.K_DOWN]:
-                    self.dirnx = 0
-                    self.dirny = 1
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+                    self.turn(0, 1)
  
         for i, c in enumerate(self.body):
             p = c.pos[:]
@@ -185,9 +188,15 @@ def main():
     flag = True
  
     clock = pygame.time.Clock()
-   
+
     while flag:
         pygame.time.delay(50)
+
+        if random.randint(0, 1):
+            s.turn(random.randint(-1, 1), 0)
+        else:
+            s.turn(0, random.randint(-1, 1))
+
         clock.tick(10)
         s.move()
         if s.body[0].pos == snack.pos:
