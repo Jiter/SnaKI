@@ -6,12 +6,6 @@ import pygame
 import tkinter as tk
 from tkinter import messagebox
 
-import numpy as np
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
-import random
-
 class cube(object):
     rows = 20
     w = 500
@@ -21,7 +15,6 @@ class cube(object):
         self.dirny = 0
         self.color = color
  
-       
     def move(self, dirnx, dirny):
         self.dirnx = dirnx
         self.dirny = dirny
@@ -177,33 +170,57 @@ def message_box(subject, content):
     except:
         pass
  
- 
+def update_dbg_view(surface, output):
+
+    ypos = 510
+    xpos = 5
+
+    ## Print Title
+    text = titlefont.render("SnaKI/2020", True, (128, 0, 0))
+    surface.blit(text, (ypos, xpos)) 
+    xpos = xpos + 20
+
+    for text, val in output.items():
+        text = font.render(str(text), True, (0, 128, 0))
+        surface.blit(text, (ypos, xpos))
+        text = font.render(str(val), True, (0, 128, 0))
+        surface.blit(text, (ypos + 100, xpos))
+        xpos = xpos + 12
+    
+
 def main():
-    global width, rows, s, snack
+    global width, rows, s, snack, font, titlefont
     width = 500
     rows = 20
-    win = pygame.display.set_mode((width, width))
+    cycles = 0
+    win = pygame.display.set_mode((width*2, width))
     s = snake((255,0,0), (10,10))
     snack = cube(randomSnack(rows, s), color=(0,255,0))
     flag = True
  
+    pygame.init()
+
+    titlefont = pygame.font.SysFont("consolas", 16, True, False)
+    font = pygame.font.SysFont("consolas", 12, True, False)
+
+    dbgout = {"Position" : " "} # Dictionary für Debugausgaben einfach im Code erweitern
+
     clock = pygame.time.Clock()
 
     while flag:
-        pygame.time.delay(50)
+        cycles = cycles + 1
+        pygame.time.delay(1)
 
         if random.randint(0, 1):
             s.turn(random.randint(-1, 1), 0)
         else:
             s.turn(0, random.randint(-1, 1))
 
-        clock.tick(10)
+        clock.tick(100)
         s.move()
         if s.body[0].pos == snack.pos:
             s.addCube()
             snack = cube(randomSnack(rows, s), color=(0,255,0))
-
-        print(s.body[0].pos)
 
         for x in range(len(s.body)):
             if s.body[x].pos in list(map(lambda z:z.pos,s.body[x+1:]))\
@@ -216,8 +233,14 @@ def main():
                 message_box("You Lost!", "Play again...")
                 s.reset((10, 10))
                 break
-           
+
+        dbgout["Position"] = "{}, {}".format(s.body[0].pos[0], s.body[0].pos[1])
+        dbgout["FPS"] = "{}".format(clock)
+        dbgout["Cycles"] = cycles
+
         redrawWindow(win)
+        update_dbg_view(win, dbgout)
+        pygame.display.update()
     pass
 
 main()
