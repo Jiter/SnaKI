@@ -235,8 +235,10 @@ def main():
                 break
 
         dbgout["Position"] = "{}, {}".format(s.body[0].pos[0], s.body[0].pos[1])
+        dbgout["Length"] = len(s.body)
         dbgout["FPS"] = "{}".format(clock)
         dbgout["Cycles"] = cycles
+
 
         redrawWindow(win)
         update_dbg_view(win, dbgout)
