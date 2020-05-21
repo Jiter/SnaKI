@@ -40,7 +40,7 @@ class cube(object):
 class snake(object):
     body = []
     turns = {}
-
+    
     def __init__(self, color, pos):
         self.color = color
         self.head = cube(pos)
@@ -59,7 +59,6 @@ class snake(object):
                 pygame.quit()
 
             keys = pygame.key.get_pressed()
-            #print(keys)
 
             for key in keys:
                 if keys[pygame.K_LEFT]:
@@ -120,6 +119,16 @@ class snake(object):
                 c.draw(surface, True)
             else:
                 c.draw(surface)
+
+class SnaKI(object):
+
+    __dirs__ = {"up" : 0, "dn" : 0, "le" : 0, "rg" : 0}
+    dist = {"wall" : __dirs__, "snake" : __dirs__, "food" : __dirs__}
+    
+    def __init__(self):
+        pass
+
+
 
 
 def drawGrid(w, rows, surface):
@@ -196,6 +205,7 @@ def main():
     win = pygame.display.set_mode((width*2, width))
     s = snake((255, 0, 0), (10, 10))
     snack = cube(randomSnack(rows, s), color=(0, 255, 0))
+    ki = SnaKI()
     flag = True
 
     pygame.init()
@@ -210,7 +220,6 @@ def main():
 
     while flag:
         cycles = cycles + 1
-        pygame.time.delay(1)
 
         if random.randint(0, 1):
             s.turn(random.randint(-1, 1), 0)
@@ -236,6 +245,8 @@ def main():
                 cycles = 0
                 break
 
+        ki.dist["wall"]["up"] = 1;  
+
         dbgout["Position"] = "{}, {}".format(
             s.body[0].pos[0], s.body[0].pos[1])
         dbgout["Length"] = len(s.body)
@@ -250,3 +261,4 @@ def main():
 
 
 main()
+
