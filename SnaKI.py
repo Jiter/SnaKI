@@ -130,8 +130,9 @@ class SnaKI(object):
     #     
     ####
 
-    __dirs__ = {"up" : 0, "ur" : 0, "rg" : 0, "dr" : 0, "dn" : 0, "dl" : 0, "le" : 0, "ul" : 0}
-    dist = {"wall" : __dirs__, "snake" : __dirs__, "food" : __dirs__}
+    dist = {"wall" : {"up" : 0, "ur" : 0, "rg" : 0, "dr" : 0, "dn" : 0, "dl" : 0, "le" : 0, "ul" : 0}, \
+           "snake" : {"up" : 0, "ur" : 0, "rg" : 0, "dr" : 0, "dn" : 0, "dl" : 0, "le" : 0, "ul" : 0}, \
+            "food" : {"up" : 0, "ur" : 0, "rg" : 0, "dr" : 0, "dn" : 0, "dl" : 0, "le" : 0, "ul" : 0}}
     
     def __init__(self):
         pass
@@ -204,43 +205,43 @@ def update_dbg_view(surface, output):
         surface.blit(text, (ypos + 100, xpos))
         xpos = xpos + 12
 
-def get_distances(ki, s):
+def get_distances():
 
-    # Get Distance from Head to Walls 
-    ki.dist["wall"]["up"] = 1;
-    ki.dist["wall"]["dn"] = 1; 
-    ki.dist["wall"]["le"] = 1;
-    ki.dist["wall"]["rg"] = 1;
-    ki.dist["wall"]["ur"] = 1;
-    ki.dist["wall"]["dr"] = 1; 
-    ki.dist["wall"]["ul"] = 1;
-    ki.dist["wall"]["dl"] = 1; 
+    # Get Distance from Head to Walls  
+    ki.dist["wall"]["up"] = s.head.pos[1]
+    ki.dist["wall"]["dn"] = rows - s.head.pos[1] - 1
+    ki.dist["wall"]["le"] = s.head.pos[0]
+    ki.dist["wall"]["rg"] = rows - s.head.pos[0] - 1
+    ki.dist["wall"]["ur"] = 1
+    ki.dist["wall"]["dr"] = 1
+    ki.dist["wall"]["ul"] = 1
+    ki.dist["wall"]["dl"] = 1
 
-    ki.dist["snake"]["up"] = 1;
-    ki.dist["snake"]["dn"] = 1; 
-    ki.dist["snake"]["le"] = 1;
-    ki.dist["snake"]["rg"] = 1;
-    ki.dist["snake"]["ur"] = 1;
-    ki.dist["snake"]["dr"] = 1; 
-    ki.dist["snake"]["ul"] = 1;
-    ki.dist["snake"]["dl"] = 1; 
+    ki.dist["snake"]["up"] = 1
+    ki.dist["snake"]["dn"] = 1
+    ki.dist["snake"]["le"] = 1
+    ki.dist["snake"]["rg"] = 1
+    ki.dist["snake"]["ur"] = 1
+    ki.dist["snake"]["dr"] = 1
+    ki.dist["snake"]["ul"] = 1
+    ki.dist["snake"]["dl"] = 1
 
-    ki.dist["food"]["up"] = 1;
-    ki.dist["food"]["dn"] = 1; 
-    ki.dist["food"]["le"] = 1;
-    ki.dist["food"]["rg"] = 1;
-    ki.dist["food"]["ur"] = 1;
-    ki.dist["food"]["dr"] = 1; 
-    ki.dist["food"]["ul"] = 1;
-    ki.dist["food"]["dl"] = 1; 
+    ki.dist["food"]["up"] = 1
+    ki.dist["food"]["dn"] = 1
+    ki.dist["food"]["le"] = 1
+    ki.dist["food"]["rg"] = 1
+    ki.dist["food"]["ur"] = 1
+    ki.dist["food"]["dr"] = 1
+    ki.dist["food"]["ul"] = 1
+    ki.dist["food"]["dl"] = 1
 
 def main():
-    global width, rows, s, snack, font, titlefont
+    global width, rows, s, snack, font, titlefont, ki
     width = 500
     rows = 20
     cycles = 0
     win = pygame.display.set_mode((width*2, width))
-    s = snake((255, 0, 0), (10, 10))
+    s = snake((255, 0, 0), (9, 9))
     snack = cube(randomSnack(rows, s), color=(0, 255, 0))
     ki = SnaKI()
     flag = True
@@ -282,13 +283,14 @@ def main():
                 cycles = 0
                 break
 
-        get_distances(ki)
+        get_distances()
     
         dbgout["Position"] = "{}, {}".format(
             s.body[0].pos[0], s.body[0].pos[1])
         dbgout["Length"] = len(s.body)
         dbgout["FPS"] = "{}".format(clock)
         dbgout["Cycles"] = cycles
+        dbgout["Wall_u d l r"] = "{}, {}, {}, {},".format(ki.dist["wall"]["up"], ki.dist["wall"]["dn"], ki.dist["wall"]["le"], ki.dist["wall"]["rg"])
 
         redrawWindow(win)
         update_dbg_view(win, dbgout)
