@@ -8,13 +8,13 @@ from tkinter import messagebox
 class cube(object):
     rows = 20
     w = 500
+
     def __init__(self,start,dirnx=1,dirny=0,color=(255,0,0)):
         self.pos = start
         self.dirnx = 1
         self.dirny = 0
         self.color = color
- 
-       
+
     def move(self, dirnx, dirny):
         self.dirnx = dirnx
         self.dirny = dirny
@@ -38,41 +38,51 @@ class cube(object):
 class snake(object):
     body = []
     turns = {}
+
     def __init__(self, color, pos):
         self.color = color
         self.head = cube(pos)
         self.body.append(self.head)
         self.dirnx = 1
         self.dirny = 0
- 
+
+    # New block of code to let the snake move around randomly
+    def turn(self, x, y):
+        self.dirnx = x
+        self.dirny = y
+        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+
     def move(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
 
             keys = pygame.key.get_pressed()
-            #print(keys)
- 
+
             for key in keys:
                 if keys[pygame.K_LEFT]:
-                    self.dirnx = -1
+                    '''self.dirnx = -1
                     self.dirny = 0
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move left
+                    self.turn(-1, 0)    # New code
  
                 elif keys[pygame.K_RIGHT]:
-                    self.dirnx = 1
+                    '''self.dirnx = 1
                     self.dirny = 0
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move right
+                    self.turn(1, 0)     # New code
  
                 elif keys[pygame.K_UP]:
-                    self.dirnx = 0
+                    '''self.dirnx = 0
                     self.dirny = -1
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move up
+                    self.turn(0, -1)    # New code
  
                 elif keys[pygame.K_DOWN]:
-                    self.dirnx = 0
+                    '''self.dirnx = 0
                     self.dirny = 1
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move down
+                    self.turn(0, 1)     # New code
  
         for i, c in enumerate(self.body):
             p = c.pos[:]
@@ -82,7 +92,7 @@ class snake(object):
                 if i == len(self.body)-1:
                     self.turns.pop(p)
             else:
-                ''' Must be commented out, otherwise the snake will go through the walls
+                ''' Must be commented out, otherwise the snake will still go through the walls
                 if c.dirnx == -1 and c.pos[0] <= 0: c.pos = (c.rows-1, c.pos[1])
                 elif c.dirnx == 1 and c.pos[0] >= c.rows-1: c.pos = (0,c.pos[1])
                 elif c.dirny == 1 and c.pos[1] >= c.rows-1: c.pos = (c.pos[0], 0)
@@ -123,8 +133,25 @@ class snake(object):
                 c.draw(surface, True)
             else:
                 c.draw(surface)
- 
- 
+
+
+class SnaKI(object):
+    #### Directions from SnakeHead
+    #
+    #    ul    up    ur
+    #    le   [SN]   rg
+    #    dl    dn    dr
+    #
+    ####
+
+    dist = {"wall": {"up": 0, "ur": 0, "rg": 0, "dr": 0, "dn": 0, "dl": 0, "le": 0, "ul": 0},\
+            "snake": {"up": 0, "ur": 0, "rg": 0, "dr": 0, "dn": 0, "dl": 0, "le": 0, "ul": 0},\
+            "food": {"up": 0, "ur": 0, "rg": 0, "dr": 0, "dn": 0, "dl": 0, "le": 0, "ul": 0}}
+
+    def __init__(self):
+        pass
+
+
 def drawGrid(w, rows, surface):
     sizeBtwn = w // rows
  
@@ -145,7 +172,7 @@ def redrawWindow(surface):
     s.draw(surface)
     snack.draw(surface)
     drawGrid(width, rows, surface)
-    pygame.display.update()
+    #pygame.display.update()
  
  
 def randomSnack(rows, item):
@@ -174,324 +201,310 @@ def message_box(subject, content):
         pass
 
 
-# Function to calculate the 24 distances (8 directions * 3 distances(food, body, wall))
-def distances(snake_x_direction, snake_y_direction, snake_body, snack_pos):
+def update_dbg_view(surface, output):
 
-    distance_list = []
+    ypos = 510
+    xpos = 5
 
-    ##### Perspective straight right (rg)
-    # Distance to food (1)
-    '''if snake_body[0].pos[1] == snack_pos[1] and snake_body[0].pos[0] < snack_pos[0]:
-        distance_list.append(snack_pos[0] - snake_body[0].pos[0])
+    ## Print Title
+    text = titlefont.render("SnaKI/2020", True, (128, 0, 0))
+    surface.blit(text, (ypos, xpos))
+    xpos = xpos + 20
+
+    for text, val in output.items():
+        text = font.render(str(text), True, (0, 128, 0))
+        surface.blit(text, (ypos, xpos))
+        text = font.render(str(val), True, (0, 128, 0))
+        surface.blit(text, (ypos + 100, xpos))
+        xpos = xpos + 12
+
+
+def get_distances():
+
+    # Get Distance from Head to Walls
+    ki.dist["wall"]["up"] = s.head.pos[1]
+    ki.dist["wall"]["dn"] = rows - s.head.pos[1] - 1
+    ki.dist["wall"]["le"] = s.head.pos[0]
+    ki.dist["wall"]["rg"] = rows - s.head.pos[0] - 1
+
+    if ((rows - 1) - s.body[0].pos[0]) >= s.body[0].pos[1]:
+        ki.dist["wall"]["ur"] = s.body[0].pos[1]
     else:
-        distance_list.append(0)'''
+        ki.dist["wall"]["ur"] = rows - s.body[0].pos[0] - 1
 
-    # Distance to body (2)
-    '''for body_part in snake_body:
-        if snake_body[0] != body_part\
-                and snake_body[0].pos[1] == body_part.pos[1]\
-                and snake_body[0].pos[0] < body_part.pos[0]:
-            distance_list.append(body_part.pos[0] - snake_body[0].pos[0])
+    if s.body[0].pos[0] <= s.body[0].pos[1]:
+        ki.dist["wall"]["dr"] = rows - s.body[0].pos[1] - 1
+    else:
+        ki.dist["wall"]["dr"] = rows - s.body[0].pos[0] - 1
+
+    if s.body[0].pos[0] >= s.body[0].pos[1]:
+        ki.dist["wall"]["ul"] = s.body[0].pos[1]
+    else:
+        ki.dist["wall"]["ul"] = s.body[0].pos[0]
+
+    if ((rows - 1) - s.body[0].pos[0]) <= s.body[0].pos[1]:
+        ki.dist["wall"]["dl"] = rows - s.body[0].pos[1] - 1
+    else:
+        ki.dist["wall"]["dl"] = ki.dist["wall"]["dl"] = s.body[0].pos[0]
+
+    # Get Distance from Head to Body
+    for body_part in s.body:
+        if s.body[0] != body_part \
+                and s.body[0].pos[0] == body_part.pos[0] \
+                and s.body[0].pos[1] > body_part.pos[1]:
+            ki.dist["snake"]["up"] = s.body[0].pos[1] - body_part.pos[1] - 1
             break
-        elif body_part == snake_body[-1]:
-            distance_list.append(0)'''
+        elif body_part == s.body[-1]:
+            ki.dist["snake"]["up"] = 0
 
-    # Distance to wall (3)
-    '''distance_list.append(rows - snake_body[0].pos[0])'''
+    for body_part in s.body:
+        if s.body[0] != body_part \
+                and s.body[0].pos[0] == body_part.pos[0] \
+                and s.body[0].pos[1] < body_part.pos[1]:
+            ki.dist["snake"]["dn"] = body_part.pos[1] - s.body[0].pos[1] - 1
+            break
+        elif body_part == s.body[-1]:
+            ki.dist["snake"]["dn"] = 0
 
-    ##### Perspective down right (dr)
-    # Distance to food (4)
-    '''if snake_body[0].pos[0] - snack_pos[0] == snake_body[0].pos[1] - snack_pos[1]\
-            and (snake_body[0].pos[0] < snack_pos[0])\
-            and (snake_body[0].pos[1] < snack_pos[1]):
-        distance_list.append(snack_pos[1] - snake_body[0].pos[1])
-    else:
-        distance_list.append(0)'''
+    for body_part in s.body:
+        if s.body[0] != body_part \
+                and s.body[0].pos[1] == body_part.pos[1] \
+                and s.body[0].pos[0] > body_part.pos[0]:
+            ki.dist["snake"]["le"] = s.body[0].pos[0] - body_part.pos[0] - 1
+            break
+        elif body_part == s.body[-1]:
+            ki.dist["snake"]["le"] = 0
 
-    # Distance to body (5)
-    '''if snake_body[0].pos[0] < (rows - 1) and snake_body[0].pos[1] < (rows - 1):
+    for body_part in s.body:
+        if s.body[0] != body_part \
+                and s.body[0].pos[1] == body_part.pos[1] \
+                and s.body[0].pos[0] < body_part.pos[0]:
+            ki.dist["snake"]["rg"] = body_part.pos[0] - s.body[0].pos[0] - 1
+            break
+        elif body_part == s.body[-1]:
+            ki.dist["snake"]["rg"] = 0
+
+    if s.body[0].pos[0] < (rows - 1) and s.body[0].pos[1] > 0:
         found = False
-        if snake_body[0].pos[0] <= snake_body[0].pos[1]:
-            for i in range((rows - 1) - snake_body[0].pos[1]):
-                for body_part in snake_body:
-                    if snake_body[0] != body_part\
-                            and snake_body[0].pos[0] + i + 1 == body_part.pos[0]\
-                            and snake_body[0].pos[1] + i + 1 == body_part.pos[1]:
-                        distance_list.append(body_part.pos[1] - snake_body[0].pos[1])
+        if ((rows - 1) - s.body[0].pos[0]) >= s.body[0].pos[1]:
+            for i in range(s.body[0].pos[1]):
+                for body_part in s.body:
+                    if s.body[0] != body_part \
+                            and s.body[0].pos[0] + i + 1 == body_part.pos[0] \
+                            and s.body[0].pos[1] - i - 1 == body_part.pos[1]:
+                        ki.dist["snake"]["ur"] = s.body[0].pos[1] - body_part.pos[1] - 1
                         found = True
                         break
-                    elif body_part == snake_body[-1] and i == ((rows - 1) - snake_body[0].pos[1] - 1):
-                        distance_list.append(0)
+                    elif body_part == s.body[-1] and i == (s.body[0].pos[1] - 1):
+                        ki.dist["snake"]["ur"] = 0
                 if found:
                     break
         else:
-            for i in range((rows - 1) - snake_body[0].pos[0]):
-                for body_part in snake_body:
-                    if snake_body[0] != body_part\
-                            and snake_body[0].pos[0] + i + 1 == body_part.pos[0]\
-                            and snake_body[0].pos[1] + i + 1 == body_part.pos[1]:
-                        distance_list.append(body_part.pos[1] - snake_body[0].pos[1])
+            for i in range((rows - 1) - s.body[0].pos[0]):
+                for body_part in s.body:
+                    if s.body[0] != body_part \
+                            and s.body[0].pos[0] + i + 1 == body_part.pos[0] \
+                            and s.body[0].pos[1] - i - 1 == body_part.pos[1]:
+                        ki.dist["snake"]["ur"] = s.body[0].pos[1] - body_part.pos[1] - 1
                         found = True
                         break
-                    elif body_part == snake_body[-1] and i == ((rows - 1) - snake_body[0].pos[0] - 1):
-                        distance_list.append(0)
+                    elif body_part == s.body[-1] and i == ((rows - 1) - s.body[0].pos[0] - 1):
+                        ki.dist["snake"]["ur"] = 0
                 if found:
                     break
     else:
-        distance_list.append(0)'''
+        ki.dist["snake"]["ur"] = 0
 
-    # Distance to wall (6)
-    '''if snake_body[0].pos[0] <= snake_body[0].pos[1]:
-        distance_list.append(rows - snake_body[0].pos[1])
-    else:
-        distance_list.append(rows - snake_body[0].pos[0])'''
-
-    ##### Perspective down (dn)
-    # Distance to food (7)
-    '''if snake_body[0].pos[0] == snack_pos[0] and snake_body[0].pos[1] < snack_pos[1]:
-        distance_list.append(snack_pos[1] - snake_body[0].pos[1])
-    else:
-        distance_list.append(0)'''
-
-    # Distance to body (8)
-    '''for body_part in snake_body:
-        if snake_body[0] != body_part\
-                and snake_body[0].pos[0] == body_part.pos[0]\
-                and snake_body[0].pos[1] < body_part.pos[1]:
-            distance_list.append(body_part.pos[1] - snake_body[0].pos[1])
-            break
-        elif body_part == snake_body[-1]:
-            distance_list.append(0)'''
-
-    # Distance to wall (9)
-    '''distance_list.append(rows - snake_body[0].pos[1])'''
-
-    ##### Perspective down left (dl)
-    # Distance to food (10)
-    '''if snack_pos[0] - snake_body[0].pos[0] == snake_body[0].pos[1] - snack_pos[1]\
-            and (snake_body[0].pos[0] > snack_pos[0])\
-            and (snake_body[0].pos[1] < snack_pos[1]):
-        distance_list.append(snack_pos[1] - snake_body[0].pos[1])
-    else:
-        distance_list.append(0)'''
-
-    # Distance to body (11)
-    '''if snake_body[0].pos[0] > 0 and snake_body[0].pos[1] < (rows - 1):
+    if s.body[0].pos[0] < (rows - 1) and s.body[0].pos[1] < (rows - 1):
         found = False
-        if snake_body[0].pos[0] >= ((rows - 1) - snake_body[0].pos[1]):
-            for i in range((rows - 1) - snake_body[0].pos[1]):
-                for body_part in snake_body:
-                    if snake_body[0] != body_part\
-                            and snake_body[0].pos[0] - i - 1 == body_part.pos[0]\
-                            and snake_body[0].pos[1] + i + 1 == body_part.pos[1]:
-                        distance_list.append(body_part.pos[1] - snake_body[0].pos[1])
+        if s.body[0].pos[0] <= s.body[0].pos[1]:
+            for i in range((rows - 1) - s.body[0].pos[1]):
+                for body_part in s.body:
+                    if s.body[0] != body_part \
+                            and s.body[0].pos[0] + i + 1 == body_part.pos[0] \
+                            and s.body[0].pos[1] + i + 1 == body_part.pos[1]:
+                        ki.dist["snake"]["dr"] = body_part.pos[1] - s.body[0].pos[1] - 1
                         found = True
                         break
-                    elif body_part == snake_body[-1] and i == ((rows - 1) - snake_body[0].pos[1] - 1):
-                        distance_list.append(0)
+                    elif body_part == s.body[-1] and i == ((rows - 1) - s.body[0].pos[1] - 1):
+                        ki.dist["snake"]["dr"] = 0
                 if found:
                     break
         else:
-            for i in range(snake_body[0].pos[0]):
-                for body_part in snake_body:
-                    if snake_body[0] != body_part\
-                            and snake_body[0].pos[0] - i - 1 == body_part.pos[0]\
-                            and snake_body[0].pos[1] + i + 1 == body_part.pos[1]:
-                        distance_list.append(body_part.pos[1] - snake_body[0].pos[1])
+            for i in range((rows - 1) - s.body[0].pos[0]):
+                for body_part in s.body:
+                    if s.body[0] != body_part \
+                            and s.body[0].pos[0] + i + 1 == body_part.pos[0] \
+                            and s.body[0].pos[1] + i + 1 == body_part.pos[1]:
+                        ki.dist["snake"]["dr"] = body_part.pos[1] - s.body[0].pos[1] - 1
                         found = True
                         break
-                    elif body_part == snake_body[-1] and i == (snake_body[0].pos[0] - 1):
-                        distance_list.append(0)
+                    elif body_part == s.body[-1] and i == ((rows - 1) - s.body[0].pos[0] - 1):
+                        ki.dist["snake"]["dr"] = 0
                 if found:
                     break
     else:
-        distance_list.append(0)'''
+        ki.dist["snake"]["dr"] = 0
 
-    # Distance to wall (12)
-    '''if ((rows - 1) - snake_body[0].pos[0]) <= snake_body[0].pos[1]:
-        distance_list.append(rows - snake_body[0].pos[1])
-    else:
-        distance_list.append(snake_body[0].pos[0] + 1)'''
-
-    ##### Perspective left (le)
-    # Distance to food (13)
-    '''if snake_body[0].pos[1] == snack_pos[1] and snake_body[0].pos[0] > snack_pos[0]:
-        distance_list.append(snake_body[0].pos[0] - snack_pos[0])
-    else:
-        distance_list.append(0)'''
-
-    # Distance to body (14)
-    '''for body_part in snake_body:
-        if snake_body[0] != body_part\
-                and snake_body[0].pos[1] == body_part.pos[1]\
-                and snake_body[0].pos[0] > body_part.pos[0]:
-            distance_list.append(snake_body[0].pos[0] - body_part.pos[0])
-            break
-        elif body_part == snake_body[-1]:
-            distance_list.append(0)'''
-
-    # Distance to wall (15)
-    '''distance_list.append(snake_body[0].pos[0] + 1)'''
-
-    ##### Perspective up left (ul)
-    # Distance to food (16)
-    '''if snake_body[0].pos[0] - snack_pos[0] == snake_body[0].pos[1] - snack_pos[1]\
-            and (snake_body[0].pos[0] > snack_pos[0])\
-            and (snake_body[0].pos[1] > snack_pos[1]):
-        distance_list.append(snake_body[0].pos[1] - snack_pos[1])
-    else:
-        distance_list.append(0)'''
-
-    # Distance to body (17)
-    '''if snake_body[0].pos[0] > 0 and snake_body[0].pos[1] > 0:
+    if s.body[0].pos[0] > 0 and s.body[0].pos[1] > 0:
         found = False
-        if snake_body[0].pos[0] >= (snake_body[0].pos[1]):
-            for i in range(snake_body[0].pos[1]):
-                for body_part in snake_body:
-                    if snake_body[0] != body_part\
-                            and snake_body[0].pos[0] - i - 1 == body_part.pos[0]\
-                            and snake_body[0].pos[1] - i - 1 == body_part.pos[1]:
-                        distance_list.append(snake_body[0].pos[1] - body_part.pos[1])
+        if s.body[0].pos[0] >= (s.body[0].pos[1]):
+            for i in range(s.body[0].pos[1]):
+                for body_part in s.body:
+                    if s.body[0] != body_part \
+                            and s.body[0].pos[0] - i - 1 == body_part.pos[0] \
+                            and s.body[0].pos[1] - i - 1 == body_part.pos[1]:
+                        ki.dist["snake"]["ul"] = s.body[0].pos[1] - body_part.pos[1] - 1
                         found = True
                         break
-                    elif body_part == snake_body[-1] and i == (snake_body[0].pos[1] - 1):
-                        distance_list.append(0)
+                    elif body_part == s.body[-1] and i == (s.body[0].pos[1] - 1):
+                        ki.dist["snake"]["ul"] = 0
                 if found:
                     break
         else:
-            for i in range(snake_body[0].pos[0]):
-                for body_part in snake_body:
-                    if snake_body[0] != body_part\
-                            and snake_body[0].pos[0] - i - 1 == body_part.pos[0]\
-                            and snake_body[0].pos[1] - i - 1 == body_part.pos[1]:
-                        distance_list.append(snake_body[0].pos[1] - body_part.pos[1])
+            for i in range(s.body[0].pos[0]):
+                for body_part in s.body:
+                    if s.body[0] != body_part \
+                            and s.body[0].pos[0] - i - 1 == body_part.pos[0] \
+                            and s.body[0].pos[1] - i - 1 == body_part.pos[1]:
+                        ki.dist["snake"]["ul"] = s.body[0].pos[1] - body_part.pos[1] - 1
                         found = True
                         break
-                    elif body_part == snake_body[-1] and i == (snake_body[0].pos[0] - 1):
-                        distance_list.append(0)
+                    elif body_part == s.body[-1] and i == (s.body[0].pos[0] - 1):
+                        ki.dist["snake"]["ul"] = 0
                 if found:
                     break
     else:
-        distance_list.append(0)'''
+        ki.dist["snake"]["ul"] = 0
 
-    # Distance to wall (18)
-    '''if snake_body[0].pos[0] >= snake_body[0].pos[1]:
-        distance_list.append(snake_body[0].pos[1] + 1)
-    else:
-        distance_list.append(snake_body[0].pos[0] + 1)'''
-
-    ##### Perspective up (up)
-    # Distance to food (19)
-    '''if snake_body[0].pos[0] == snack_pos[0] and snake_body[0].pos[1] > snack_pos[1]:
-        distance_list.append(snake_body[0].pos[1] - snack_pos[1])
-    else:
-        distance_list.append(0)'''
-
-    # Distance to body (20)
-    '''for body_part in snake_body:
-        if snake_body[0] != body_part\
-                and snake_body[0].pos[0] == body_part.pos[0]\
-                and snake_body[0].pos[1] > body_part.pos[1]:
-            distance_list.append(snake_body[0].pos[1] - body_part.pos[1])
-            break
-        elif body_part == snake_body[-1]:
-            distance_list.append(0)'''
-
-    # Distance to wall (21)
-    '''distance_list.append(snake_body[0].pos[1] + 1)'''
-
-    ##### Perspective up right (ur)
-    # Distance to food (22)
-    '''if snack_pos[0] - snake_body[0].pos[0] == snake_body[0].pos[1] - snack_pos[1]\
-            and (snake_body[0].pos[0] < snack_pos[0])\
-            and (snake_body[0].pos[1] > snack_pos[1]):
-        distance_list.append(snake_body[0].pos[1] - snack_pos[1])
-    else:
-        distance_list.append(0)'''
-
-    # Distance to body (23)
-    '''if snake_body[0].pos[0] < (rows - 1) and snake_body[0].pos[1] > 0:
+    if s.body[0].pos[0] > 0 and s.body[0].pos[1] < (rows - 1):
         found = False
-        if ((rows - 1) - snake_body[0].pos[0]) >= snake_body[0].pos[1]:
-            for i in range(snake_body[0].pos[1]):
-                for body_part in snake_body:
-                    if snake_body[0] != body_part\
-                            and snake_body[0].pos[0] + i + 1 == body_part.pos[0]\
-                            and snake_body[0].pos[1] - i - 1 == body_part.pos[1]:
-                        distance_list.append(snake_body[0].pos[1] - body_part.pos[1])
+        if s.body[0].pos[0] >= ((rows - 1) - s.body[0].pos[1]):
+            for i in range((rows - 1) - s.body[0].pos[1]):
+                for body_part in s.body:
+                    if s.body[0] != body_part \
+                            and s.body[0].pos[0] - i - 1 == body_part.pos[0] \
+                            and s.body[0].pos[1] + i + 1 == body_part.pos[1]:
+                        ki.dist["snake"]["dl"] = body_part.pos[1] - s.body[0].pos[1] - 1
                         found = True
                         break
-                    elif body_part == snake_body[-1] and i == (snake_body[0].pos[1] - 1):
-                        distance_list.append(0)
+                    elif body_part == s.body[-1] and i == ((rows - 1) - s.body[0].pos[1] - 1):
+                        ki.dist["snake"]["dl"] = 0
                 if found:
                     break
         else:
-            for i in range((rows - 1) - snake_body[0].pos[0]):
-                for body_part in snake_body:
-                    if snake_body[0] != body_part\
-                            and snake_body[0].pos[0] + i + 1 == body_part.pos[0]\
-                            and snake_body[0].pos[1] - i - 1 == body_part.pos[1]:
-                        distance_list.append(snake_body[0].pos[1] - body_part.pos[1])
+            for i in range(s.body[0].pos[0]):
+                for body_part in s.body:
+                    if s.body[0] != body_part \
+                            and s.body[0].pos[0] - i - 1 == body_part.pos[0] \
+                            and s.body[0].pos[1] + i + 1 == body_part.pos[1]:
+                        ki.dist["snake"]["dl"] = body_part.pos[1] - s.body[0].pos[1] - 1
                         found = True
                         break
-                    elif body_part == snake_body[-1] and i == ((rows - 1) - snake_body[0].pos[0] - 1):
-                        distance_list.append(0)
+                    elif body_part == s.body[-1] and i == (s.body[0].pos[0] - 1):
+                        ki.dist["snake"]["dl"] = 0
                 if found:
                     break
     else:
-        distance_list.append(0)'''
+        ki.dist["snake"]["dl"] = 0
 
-    # Distance to wall (24)
-    if ((rows - 1) - snake_body[0].pos[0]) >= snake_body[0].pos[1]:
-        distance_list.append(snake_body[0].pos[1] + 1)
+    # Get Distance from Head to food
+    if s.body[0].pos[0] == snack.pos[0] and s.body[0].pos[1] > snack.pos[1]:
+        ki.dist["food"]["up"] = s.body[0].pos[1] - snack.pos[1] - 1
     else:
-        distance_list.append(rows - snake_body[0].pos[0])
+        ki.dist["food"]["up"] = 0
 
-    print(distance_list)
-    #print(distance_list[10])
-    #print(#"Distance to food (rg): ", distance_list[0],     # Right/rg
-           #"Distance to body (rg): ", distance_list[1],
-           #"Distance to wall (rg): ", distance_list[2],
-           #"Distance to food (dr): ", distance_list[3],     # Down right/dr
-           #"Distance to body (dr): ", distance_list[4],
-           #"Distance to wall (dr): ", distance_list[5]
-           #"Distance to food (dn): ", distance_list[6],     # Down/dn
-           #"Distance to body (dn): ", distance_list[7],
-           #"Distance to wall (dn): ", distance_list[8],
-           #"Distance to food (dl): ", distance_list[9],    # Down left/dl
-           #"Distance to body (dl): ", distance_list[10],
-           #"Distance to wall (dl): ", distance_list[11],
-           #"Distance to food (le): ", distance_list[12],   # Left/le
-           #"Distance to body (le): ", distance_list[13],
-           #"Distance to wall (le): ", distance_list[14])
+    if s.body[0].pos[0] == snack.pos[0] and s.body[0].pos[1] < snack.pos[1]:
+        ki.dist["food"]["dn"] = snack.pos[1] - s.body[0].pos[1] - 1
+    else:
+        ki.dist["food"]["dn"] = 0
+
+    if s.body[0].pos[1] == snack.pos[1] and s.body[0].pos[0] > snack.pos[0]:
+        ki.dist["food"]["le"] = s.body[0].pos[0] - snack.pos[0] - 1
+    else:
+        ki.dist["food"]["le"] = 0
+
+    if s.body[0].pos[1] == snack.pos[1] and s.body[0].pos[0] < snack.pos[0]:
+        ki.dist["food"]["rg"] = snack.pos[0] - s.body[0].pos[0] - 1
+    else:
+        ki.dist["food"]["rg"] = 0
+
+    if snack.pos[0] - s.body[0].pos[0] == s.body[0].pos[1] - snack.pos[1] \
+            and (s.body[0].pos[0] < snack.pos[0]) \
+            and (s.body[0].pos[1] > snack.pos[1]):
+        ki.dist["food"]["ur"] = s.body[0].pos[1] - snack.pos[1] - 1
+    else:
+        ki.dist["food"]["ur"] = 0
+
+    if s.body[0].pos[0] - snack.pos[0] == s.body[0].pos[1] - snack.pos[1] \
+            and (s.body[0].pos[0] < snack.pos[0]) \
+            and (s.body[0].pos[1] < snack.pos[1]):
+        ki.dist["food"]["dr"] = snack.pos[1] - s.body[0].pos[1] - 1
+    else:
+        ki.dist["food"]["dr"] = 0
+
+    if s.body[0].pos[0] - snack.pos[0] == s.body[0].pos[1] - snack.pos[1] \
+            and (s.body[0].pos[0] > snack.pos[0]) \
+            and (s.body[0].pos[1] > snack.pos[1]):
+        ki.dist["food"]["ul"] = s.body[0].pos[1] - snack.pos[1] - 1
+    else:
+        ki.dist["food"]["ul"] = 0
+
+    if snack.pos[0] - s.body[0].pos[0] == s.body[0].pos[1] - snack.pos[1] \
+            and (s.body[0].pos[0] > snack.pos[0]) \
+            and (s.body[0].pos[1] < snack.pos[1]):
+        ki.dist["food"]["dl"] = snack.pos[1] - s.body[0].pos[1] - 1
+    else:
+        ki.dist["food"]["dl"] = 0
 
 
 def main():
-    global width, rows, s, snack
+    global width, rows, s, snack, font, titlefont, ki
     width = 500
     rows = 20
-    win = pygame.display.set_mode((width, width))
-    s = snake((255, 0, 0), (10, 10))
+    cycles = 0
+    win = pygame.display.set_mode((width*2, width))
+    s = snake((255, 0, 0), (9, 9))
     snack = cube(randomSnack(rows, s), color=(0, 255, 0))
+    ki = SnaKI()
     flag = True
- 
+
+    pygame.init()
+
+    titlefont = pygame.font.SysFont("consolas", 16, True, False)
+    font = pygame.font.SysFont("consolas", 12, True, False)
+
+    # Dictionary für Debugausgaben einfach im Code erweitern
+    dbgout = {"Position": " "}
+
     clock = pygame.time.Clock()
    
     while flag:
-        pygame.time.delay(50)
+        #pygame.time.delay(50)
+
+        cycles = cycles + 1
+
+        '''if random.randint(0, 1):
+            direction = random.randint(-1, 1)
+            s.turn(direction, 0)
+            print("X: ", direction)
+        else:
+            direction = random.randint(-1, 1)
+            s.turn(0, direction)
+            print("Y: ", direction)'''
+
         clock.tick(10)
         s.move()
+
         if s.body[0].pos == snack.pos:
             s.addCube()
             snack = cube(randomSnack(rows, s), color=(0, 255, 0))
 
-        distances(s.dirnx, s.dirny, s.body, snack.pos)
-        #snake_length = len(s.body)
-        #print(snake_length)
-        #print(s.body[0].pos)
-
         for x in range(len(s.body)):
             if s.body[x].pos in list(map(lambda z: z.pos, s.body[x+1:]))\
+                    or (len(s.body) > 1
+                        and ((s.body[0].dirnx == -s.body[1].dirnx and s.body[0].dirnx != 0)
+                             or (s.body[0].dirny == -s.body[1].dirny and s.body[0].dirny != 0)))\
                     or s.body[x].pos[0] < 0\
                     or s.body[x].pos[0] > 19\
                     or s.body[x].pos[1] < 0\
@@ -501,8 +514,21 @@ def main():
                 message_box("You Lost!", "Play again...")
                 s.reset((10, 10))
                 break
-           
+
+        get_distances()
+
+        dbgout["Position"] = "{}, {}".format(s.body[0].pos[0], s.body[0].pos[1])
+        dbgout["Length"] = len(s.body)
+        dbgout["FPS"] = "{}".format(clock)
+        dbgout["Cycles"] = cycles
+        dbgout["Wall_u d l r: "] = "{}, {}, {}, {},".format(ki.dist["wall"]["up"], ki.dist["wall"]["dn"],
+                                                          ki.dist["wall"]["le"], ki.dist["wall"]["rg"])
+        dbgout["Wall_ur dr dl ul: "] = "   {}, {}, {}, {},".format(ki.dist["wall"]["ur"], ki.dist["wall"]["dr"],
+                                                          ki.dist["wall"]["dl"], ki.dist["wall"]["ul"])
+
         redrawWindow(win)
+        update_dbg_view(win, dbgout)
+        pygame.display.update()
     pass
 
 
