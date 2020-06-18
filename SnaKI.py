@@ -521,10 +521,18 @@ def main():
         dbgout["Length"] = len(s.body)
         dbgout["FPS"] = "{}".format(clock)
         dbgout["Cycles"] = cycles
-        dbgout["Wall_u d l r: "] = "{}, {}, {}, {},".format(ki.dist["wall"]["up"], ki.dist["wall"]["dn"],
+        dbgout["Wall_u d l r: "] = "     {}, {}, {}, {},".format(ki.dist["wall"]["up"], ki.dist["wall"]["dn"],
                                                           ki.dist["wall"]["le"], ki.dist["wall"]["rg"])
-        dbgout["Wall_ur dr dl ul: "] = "   {}, {}, {}, {},".format(ki.dist["wall"]["ur"], ki.dist["wall"]["dr"],
+        dbgout["Wall_ur dr dl ul: "] = "     {}, {}, {}, {},".format(ki.dist["wall"]["ur"], ki.dist["wall"]["dr"],
                                                           ki.dist["wall"]["dl"], ki.dist["wall"]["ul"])
+        dbgout["Snake_u d l r: "] = "     {}, {}, {}, {},".format(ki.dist["snake"]["up"], ki.dist["snake"]["dn"],
+                                                            ki.dist["snake"]["le"], ki.dist["snake"]["rg"])
+        dbgout["Snake_ur dr dl ul: "] = "     {}, {}, {}, {},".format(ki.dist["snake"]["ur"], ki.dist["snake"]["dr"],
+                                                            ki.dist["snake"]["dl"], ki.dist["snake"]["ul"])
+        dbgout["Food_u d l r: "] = "     {}, {}, {}, {},".format(ki.dist["food"]["up"], ki.dist["food"]["dn"],
+                                                            ki.dist["food"]["le"], ki.dist["food"]["rg"])
+        dbgout["Food_ur dr dl ul: "] = "     {}, {}, {}, {},".format(ki.dist["food"]["ur"], ki.dist["food"]["dr"],
+                                                            ki.dist["food"]["dl"], ki.dist["food"]["ul"])
 
         redrawWindow(win)
         update_dbg_view(win, dbgout)
