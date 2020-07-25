@@ -1,3 +1,5 @@
+#Snake Tutorial Python
+
 
 import math
 import random
@@ -10,7 +12,8 @@ class cube(object):
     rows = 20
     w = 500
 
-    def __init__(self,start,dirnx=1,dirny=0,color=(255,0,0)):
+
+    def __init__(self, start, dirnx=1, dirny=0, color=(255, 0, 0)):
         self.pos = start
         self.dirnx = 1
         self.dirny = 0
@@ -20,22 +23,22 @@ class cube(object):
         self.dirnx = dirnx
         self.dirny = dirny
         self.pos = (self.pos[0] + self.dirnx, self.pos[1] + self.dirny)
- 
+
     def draw(self, surface, eyes=False):
         dis = self.w // self.rows
         i = self.pos[0]
         j = self.pos[1]
- 
-        pygame.draw.rect(surface, self.color, (i*dis+1,j*dis+1, dis-2, dis-2))
+
+        pygame.draw.rect(surface, self.color, (i*dis+1, j*dis+1, dis-2, dis-2))
         if eyes:
             centre = dis//2
             radius = 3
-            circleMiddle = (i*dis+centre-radius,j*dis+8)
-            circleMiddle2 = (i*dis + dis -radius*2, j*dis+8)
-            pygame.draw.circle(surface, (0,0,0), circleMiddle, radius)
-            pygame.draw.circle(surface, (0,0,0), circleMiddle2, radius)
- 
- 
+            circleMiddle = (i*dis+centre-radius, j*dis+8)
+            circleMiddle2 = (i*dis + dis - radius*2, j*dis+8)
+            pygame.draw.circle(surface, (0, 0, 0), circleMiddle, radius)
+            pygame.draw.circle(surface, (0, 0, 0), circleMiddle2, radius)
+
+
 class snake(object):
     body = []
     turns = {}
@@ -47,7 +50,6 @@ class snake(object):
         self.dirnx = 1
         self.dirny = 0
 
-    # New block of code to let the snake move around randomly
     def turn(self, x, y):
         self.dirnx = x
         self.dirny = y
@@ -135,7 +137,7 @@ class snake(object):
             p = c.pos[:]
             if p in self.turns:
                 turn = self.turns[p]
-                c.move(turn[0],turn[1])
+                c.move(turn[0], turn[1])
                 if i == len(self.body)-1:
                     self.turns.pop(p)
             else:
@@ -152,34 +154,37 @@ class snake(object):
         self.body = []
         self.body.append(self.head)
         self.turns = {}
+
         self.dirnx = 1
         self.dirny = 0
-
+ 
+ 
     def addCube(self):
         tail = self.body[-1]
         dx, dy = tail.dirnx, tail.dirny
- 
+
         if dx == 1 and dy == 0:
-            self.body.append(cube((tail.pos[0]-1,tail.pos[1])))
+            self.body.append(cube((tail.pos[0]-1, tail.pos[1])))
         elif dx == -1 and dy == 0:
-            self.body.append(cube((tail.pos[0]+1,tail.pos[1])))
+            self.body.append(cube((tail.pos[0]+1, tail.pos[1])))
         elif dx == 0 and dy == 1:
-            self.body.append(cube((tail.pos[0],tail.pos[1]-1)))
+            self.body.append(cube((tail.pos[0], tail.pos[1]-1)))
         elif dx == 0 and dy == -1:
-            self.body.append(cube((tail.pos[0],tail.pos[1]+1)))
- 
+            self.body.append(cube((tail.pos[0], tail.pos[1]+1)))
+
         self.body[-1].dirnx = dx
         self.body[-1].dirny = dy
 
     def draw(self, surface):
         for i, c in enumerate(self.body):
-            if i ==0:
+            if i == 0:
                 c.draw(surface, True)
             else:
                 c.draw(surface)
 
 
 class SnaKI(object):
+
     #### Directions from SnakeHead
     #
     #    ul    up    ur
@@ -188,52 +193,49 @@ class SnaKI(object):
     #
     ####
 
-    dist = {"wall": {"up": 0, "ur": 0, "rg": 0, "dr": 0, "dn": 0, "dl": 0, "le": 0, "ul": 0},\
-            "snake": {"up": 0, "ur": 0, "rg": 0, "dr": 0, "dn": 0, "dl": 0, "le": 0, "ul": 0},\
-            "food": {"up": 0, "ur": 0, "rg": 0, "dr": 0, "dn": 0, "dl": 0, "le": 0, "ul": 0}}
+    dist = {"wall" : {"up" : 0, "ur" : 0, "rg" : 0, "dr" : 0, "dn" : 0, "dl" : 0, "le" : 0, "ul" : 0}, \
+           "snake" : {"up" : 0, "ur" : 0, "rg" : 0, "dr" : 0, "dn" : 0, "dl" : 0, "le" : 0, "ul" : 0}, \
+            "food" : {"up" : 0, "ur" : 0, "rg" : 0, "dr" : 0, "dn" : 0, "dl" : 0, "le" : 0, "ul" : 0}}
 
     def __init__(self):
         pass
 
-
 def drawGrid(w, rows, surface):
     sizeBtwn = w // rows
- 
+
     x = 0
     y = 0
 
     for l in range(rows):
         x = x + sizeBtwn
         y = y + sizeBtwn
- 
-        pygame.draw.line(surface, (255,255,255), (x,0),(x,w))
-        pygame.draw.line(surface, (255,255,255), (0,y),(w,y))
-       
- 
+
+        pygame.draw.line(surface, (255, 255, 255), (x, 0), (x, w))
+        pygame.draw.line(surface, (255, 255, 255), (0, y), (w, y))
+
+
 def redrawWindow(surface):
     global rows, width, s, snack
-    surface.fill((0,0,0))
+    surface.fill((0, 0, 0))
     s.draw(surface)
     snack.draw(surface)
     drawGrid(width, rows, surface)
-    #pygame.display.update()
- 
- 
+
 def randomSnack(rows, item):
- 
+
     positions = item.body
- 
+
     while True:
         x = random.randrange(rows)
         y = random.randrange(rows)
-        if len(list(filter(lambda z:z.pos == (x,y), positions))) > 0:
+        if len(list(filter(lambda z: z.pos == (x, y), positions))) > 0:
             continue
         else:
             break
-       
-    return (x,y)
- 
- 
+
+    return (x, y)
+
+
 def message_box(subject, content):
     root = tk.Tk()
     root.attributes("-topmost", True)
@@ -262,10 +264,10 @@ def update_dbg_view(surface, output):
         surface.blit(text, (ypos + 100, xpos))
         xpos = xpos + 12
 
-
 def get_distances():
 
     # Get Distance from Head to Walls
+
     ki.dist["wall"]["up"] = s.head.pos[1]
     ki.dist["wall"]["dn"] = rows - s.head.pos[1] - 1
     ki.dist["wall"]["le"] = s.head.pos[0]
@@ -523,8 +525,9 @@ def main():
     dbgout = {"Position": " "}
 
     clock = pygame.time.Clock()
-   
+
     while flag:
+
         #pygame.time.delay(50)
 
         cycles = cycles + 1
@@ -547,6 +550,7 @@ def main():
 
         for x in range(len(s.body)):
             if s.body[x].pos in list(map(lambda z: z.pos, s.body[x+1:]))\
+
                     or (len(s.body) > 1
                         and ((s.body[0].dirnx == -s.body[1].dirnx and s.body[0].dirnx != 0)
                              or (s.body[0].dirny == -s.body[1].dirny and s.body[0].dirny != 0)))\
@@ -558,6 +562,7 @@ def main():
                 print("Score: ", len(s.body) - 1)
                 message_box("You Lost!", "Play again...")
                 s.reset((10, 10))
+                cycles = 0
                 break
 
         get_distances()
@@ -581,8 +586,10 @@ def main():
 
         redrawWindow(win)
         update_dbg_view(win, dbgout)
+
         pygame.display.update()
     pass
 
 
 main()
+
