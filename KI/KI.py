@@ -13,7 +13,7 @@ class KISnake():
     # try to read file. otherwise go ahead.
     def read_file(self):
         try:
-            with open('file.txt', 'r') as file:
+            with open('interface.txt', 'r') as file:
                 self.dist = json.load(file)
                 file.close()
         except:
@@ -37,22 +37,17 @@ class KISnake():
                 self.keyboard.release(Key.left)
                 self.keyboard.release(Key.right)
             if num == 1:
-                print("up")
                 self.keyboard.press(Key.up)
             elif num == 2:
                 self.keyboard.release(Key.up)
-                print("left")
                 self.keyboard.press(Key.left) 
             elif num == 3:
                 self.keyboard.release(Key.left)
-                print("down")
                 self.keyboard.press(Key.down)             
             elif num == 4:
                 self.keyboard.release(Key.down)
-                print("right")
                 self.keyboard.press(Key.right) 
             elif num == 5:
-                print("up")
                 self.keyboard.release(Key.right)
                 self.keyboard.press(Key.up) 
 
