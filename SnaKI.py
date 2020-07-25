@@ -12,7 +12,6 @@ class cube(object):
     rows = 20
     w = 500
 
-
     def __init__(self, start, dirnx=1, dirny=0, color=(255, 0, 0)):
         self.pos = start
         self.dirnx = 1
@@ -57,37 +56,79 @@ class snake(object):
         self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
 
     def move(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
+        global debug_flag
+        if debug_flag:
+            key_flag = True
+            while key_flag:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
 
-            keys = pygame.key.get_pressed()
+                    keys = pygame.key.get_pressed()
 
-            for key in keys:
-                if keys[pygame.K_LEFT]:
-                    '''self.dirnx = -1
-                    self.dirny = 0
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move left
-                    self.turn(-1, 0)    # New code
- 
-                elif keys[pygame.K_RIGHT]:
-                    '''self.dirnx = 1
-                    self.dirny = 0
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move right
-                    self.turn(1, 0)     # New code
- 
-                elif keys[pygame.K_UP]:
-                    '''self.dirnx = 0
-                    self.dirny = -1
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move up
-                    self.turn(0, -1)    # New code
- 
-                elif keys[pygame.K_DOWN]:
-                    '''self.dirnx = 0
-                    self.dirny = 1
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move down
-                    self.turn(0, 1)     # New code
- 
+                    for key in keys:
+                        if keys[pygame.K_LEFT]:
+                            '''self.dirnx = -1
+                            self.dirny = 0
+                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move left
+                            self.turn(-1, 0)    # New code
+
+                        elif keys[pygame.K_RIGHT]:
+                            '''self.dirnx = 1
+                            self.dirny = 0
+                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move right
+                            self.turn(1, 0)     # New code
+
+                        elif keys[pygame.K_UP]:
+                            '''self.dirnx = 0
+                            self.dirny = -1
+                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move up
+                            self.turn(0, -1)    # New code
+
+                        elif keys[pygame.K_DOWN]:
+                            '''self.dirnx = 0
+                            self.dirny = 1
+                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move down
+                            self.turn(0, 1)     # New code
+                        elif keys[pygame.K_d]:
+                            debug_flag = False
+                    if sum(list(keys)):
+                        key_flag = False
+        else:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+
+                keys = pygame.key.get_pressed()
+
+                for key in keys:
+                    if keys[pygame.K_LEFT]:
+                        '''self.dirnx = -1
+                        self.dirny = 0
+                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move left
+                        self.turn(-1, 0)  # New code
+
+                    elif keys[pygame.K_RIGHT]:
+                        '''self.dirnx = 1
+                        self.dirny = 0
+                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move right
+                        self.turn(1, 0)  # New code
+
+                    elif keys[pygame.K_UP]:
+                        '''self.dirnx = 0
+                        self.dirny = -1
+                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move up
+                        self.turn(0, -1)  # New code
+
+                    elif keys[pygame.K_DOWN]:
+                        '''self.dirnx = 0
+                        self.dirny = 1
+                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move down
+                        self.turn(0, 1)  # New code
+                    elif keys[pygame.K_d]:
+                        debug_flag = True
+
+
         for i, c in enumerate(self.body):
             p = c.pos[:]
             if p in self.turns:
@@ -459,7 +500,8 @@ def get_distances():
 
 
 def main():
-    global width, rows, s, snack, font, titlefont, ki
+    global width, rows, s, snack, font, titlefont, ki, debug_flag
+    debug_flag = False
     width = 500
     rows = 20
     cycles = 0
