@@ -130,3 +130,6 @@ dmypy.json
 
 # macOS Shit
 .DS_Store
+
+# PyCharm ProjectData
+/.idea
