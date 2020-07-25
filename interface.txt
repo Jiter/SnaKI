@@ -1,1 +1,0 @@
-{"cycles": 7, "length": 1, "wall": {"up": 10, "ur": 2, "rg": 2, "dr": 2, "dn": 9, "dl": 9, "le": 17, "ul": 10}, "snake": {"up": 0, "ur": 0, "rg": 0, "dr": 0, "dn": 0, "dl": 0, "le": 0, "ul": 0}, "food": {"up": 0, "ur": 0, "rg": 0, "dr": 0, "dn": 0, "dl": 0, "le": 0, "ul": 0}}

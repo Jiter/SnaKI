@@ -475,15 +475,6 @@ def main():
 
         cycles = cycles + 1
 
-        '''if random.randint(0, 1):
-            direction = random.randint(-1, 1)
-            s.turn(direction, 0)
-            print("X: ", direction)
-        else:
-            direction = random.randint(-1, 1)
-            s.turn(0, direction)
-            print("Y: ", direction)'''
-
         clock.tick(10)
         s.move()
 
@@ -502,7 +493,7 @@ def main():
                     or s.body[x].pos[1] > 19:
 
                 print("Score: ", len(s.body))
-                message_box("You Lost!", "Play again...")
+                #message_box("You Lost!", "Play again...")
                 s.reset((10, 10))
                 cycles = 0
                 break
@@ -529,6 +520,7 @@ def main():
         #update the interfacetextfile
         ki.fileinterface.update([('cycles', cycles)]) 
         ki.fileinterface.update([('length', len(s.body))]) 
+        ki.fileinterface.update([('snakedir', [('x', s.dirnx), ('y', s.dirny)])])
         ki.fileinterface.update(ki.dist)         
 
         redrawWindow(win)
