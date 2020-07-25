@@ -97,49 +97,6 @@ class snake(object):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-        global debug_flag
-        if debug_flag:
-            key_flag = True
-            while key_flag:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-
-                    keys = pygame.key.get_pressed()
-                    #print(type(keys))
-
-                    for key in keys:
-                        if keys[pygame.K_LEFT]:
-                            '''self.dirnx = -1
-                            self.dirny = 0
-                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move left
-                            self.turn(-1, 0)    # New code
-
-                        elif keys[pygame.K_RIGHT]:
-                            '''self.dirnx = 1
-                            self.dirny = 0
-                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move right
-                            self.turn(1, 0)     # New code
-
-                        elif keys[pygame.K_UP]:
-                            '''self.dirnx = 0
-                            self.dirny = -1
-                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move up
-                            self.turn(0, -1)    # New code
-
-                        elif keys[pygame.K_DOWN]:
-                            '''self.dirnx = 0
-                            self.dirny = 1
-                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move down
-                            self.turn(0, 1)     # New code
-                        elif keys[pygame.K_d]:
-                            debug_flag = False
-                    if sum(list(keys)):
-                        key_flag = False
-        else:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
 
                 keys = pygame.key.get_pressed()
 
