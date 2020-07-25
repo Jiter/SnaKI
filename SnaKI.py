@@ -1,12 +1,11 @@
 #Snake Tutorial Python
-
-
 import math
 import random
 import pygame
 import tkinter as tk
 from tkinter import messagebox
 
+import json
 
 class cube(object):
     rows = 20
@@ -57,35 +56,25 @@ class snake(object):
         self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
 
     def move(self):
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
 
-            keys = pygame.key.get_pressed()
+            keys = pygame.key.get_pressed()  
 
             for key in keys:
                 if keys[pygame.K_LEFT]:
-                    '''self.dirnx = -1
-                    self.dirny = 0
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move left
                     self.turn(-1, 0)    # New code
  
                 elif keys[pygame.K_RIGHT]:
-                    '''self.dirnx = 1
-                    self.dirny = 0
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move right
                     self.turn(1, 0)     # New code
  
                 elif keys[pygame.K_UP]:
-                    '''self.dirnx = 0
-                    self.dirny = -1
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move up
                     self.turn(0, -1)    # New code
  
                 elif keys[pygame.K_DOWN]:
-                    '''self.dirnx = 0
-                    self.dirny = 1
-                    self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move down
                     self.turn(0, 1)     # New code
  
         for i, c in enumerate(self.body):
@@ -96,12 +85,6 @@ class snake(object):
                 if i == len(self.body)-1:
                     self.turns.pop(p)
             else:
-                ''' Must be commented out, otherwise the snake will still go through the walls
-                if c.dirnx == -1 and c.pos[0] <= 0: c.pos = (c.rows-1, c.pos[1])
-                elif c.dirnx == 1 and c.pos[0] >= c.rows-1: c.pos = (0,c.pos[1])
-                elif c.dirny == 1 and c.pos[1] >= c.rows-1: c.pos = (c.pos[0], 0)
-                elif c.dirny == -1 and c.pos[1] <= 0: c.pos = (c.pos[0],c.rows-1)
-                else: c.move(c.dirnx,c.dirny)'''
                 c.move(c.dirnx, c.dirny)
 
     def reset(self, pos):
@@ -151,6 +134,8 @@ class SnaKI(object):
            "snake" : {"up" : 0, "ur" : 0, "rg" : 0, "dr" : 0, "dn" : 0, "dl" : 0, "le" : 0, "ul" : 0}, \
             "food" : {"up" : 0, "ur" : 0, "rg" : 0, "dr" : 0, "dn" : 0, "dl" : 0, "le" : 0, "ul" : 0}}
     
+    fileinterface = {}
+
     def __init__(self):
         pass
 
@@ -457,9 +442,15 @@ def get_distances():
     else:
         ki.dist["food"]["dl"] = 0
 
+def write_file():
+    with open('interface.txt', 'w') as file:
+        file.write(json.dumps(ki.fileinterface)) # use `json.loads` to do the reverse
+        file.close()
+
+
 
 def main():
-    global width, rows, s, snack, font, titlefont, ki
+    global width, rows, s, snack, font, titlefont, ki, cycles
     width = 500
     rows = 20
     cycles = 0
@@ -536,9 +527,14 @@ def main():
         dbgout["Food_ur dr dl ul: "] = "     {}, {}, {}, {},".format(ki.dist["food"]["ur"], ki.dist["food"]["dr"],
                                                             ki.dist["food"]["dl"], ki.dist["food"]["ul"])
 
+        #update the interfacetextfile
+        ki.fileinterface.update([('cycles', cycles)]) 
+        ki.fileinterface.update([('length', len(s.body))]) 
+        ki.fileinterface.update(ki.dist)         
+
         redrawWindow(win)
         update_dbg_view(win, dbgout)
-
+        write_file()
         pygame.display.update()
     pass
 
