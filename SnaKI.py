@@ -259,11 +259,6 @@ def main():
     while flag:
         cycles = cycles + 1
 
-        if random.randint(0, 1):
-            s.turn(random.randint(-1, 1), 0)
-        else:
-            s.turn(0, random.randint(-1, 1))
-
         clock.tick(10)
         s.move()
         if s.body[0].pos == snack.pos:
