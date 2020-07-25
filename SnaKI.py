@@ -443,10 +443,9 @@ def get_distances():
         ki.dist["food"]["dl"] = 0
 
 def write_file():
-    with open('interface.txt', 'w') as file:
+    with open('interface.json', 'w') as file:
         file.write(json.dumps(ki.fileinterface)) # use `json.loads` to do the reverse
         file.close()
-
 
 
 def main():

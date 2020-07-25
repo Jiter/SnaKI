@@ -13,7 +13,7 @@ class KISnake():
     # try to read file. otherwise go ahead.
     def read_file(self):
         try:
-            with open('interface.txt', 'r') as file:
+            with open('interface.json', 'r') as file:
                 self.dist = json.load(file)
                 file.close()
         except:
