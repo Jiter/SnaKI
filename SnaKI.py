@@ -503,7 +503,6 @@ def main():
 
         for x in range(len(s.body)):
             if s.body[x].pos in list(map(lambda z: z.pos, s.body[x+1:]))\
-
                     or (len(s.body) > 1
                         and ((s.body[0].dirnx == -s.body[1].dirnx and s.body[0].dirnx != 0)
                              or (s.body[0].dirny == -s.body[1].dirny and s.body[0].dirny != 0)))\
