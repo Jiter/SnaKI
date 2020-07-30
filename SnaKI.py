@@ -1,12 +1,11 @@
 #Snake Tutorial Python
-
-
 import math
 import random
 import pygame
 import tkinter as tk
 from tkinter import messagebox
 
+import json
 
 class cube(object):
     rows = 20
@@ -55,6 +54,7 @@ class snake(object):
         self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
 
     def move(self):
+
         global debug_flag
         if debug_flag:
             key_flag = True
@@ -136,12 +136,6 @@ class snake(object):
                 if i == len(self.body)-1:
                     self.turns.pop(p)
             else:
-                ''' Must be commented out, otherwise the snake will still go through the walls
-                if c.dirnx == -1 and c.pos[0] <= 0: c.pos = (c.rows-1, c.pos[1])
-                elif c.dirnx == 1 and c.pos[0] >= c.rows-1: c.pos = (0,c.pos[1])
-                elif c.dirny == 1 and c.pos[1] >= c.rows-1: c.pos = (c.pos[0], 0)
-                elif c.dirny == -1 and c.pos[1] <= 0: c.pos = (c.pos[0],c.rows-1)
-                else: c.move(c.dirnx,c.dirny)'''
                 c.move(c.dirnx, c.dirny)
 
     def reset(self, pos):
@@ -191,6 +185,8 @@ class SnaKI(object):
            "snake" : {"up" : 0, "ur" : 0, "rg" : 0, "dr" : 0, "dn" : 0, "dl" : 0, "le" : 0, "ul" : 0}, \
             "food" : {"up" : 0, "ur" : 0, "rg" : 0, "dr" : 0, "dn" : 0, "dl" : 0, "le" : 0, "ul" : 0}}
     
+    fileinterface = {}
+
     def __init__(self):
         pass
 
@@ -497,10 +493,16 @@ def get_distances():
     else:
         ki.dist["food"]["dl"] = 0
 
+def write_file():
+    with open('interface.json', 'w') as file:
+        file.write(json.dumps(ki.fileinterface)) # use `json.loads` to do the reverse
+        file.close()
+
 
 def main():
-    global width, rows, s, snack, font, titlefont, ki, debug_flag
+    global width, rows, s, snack, font, titlefont, ki, debug_flag, cycles
     debug_flag = False
+    
     width = 500
     rows = 20
     cycles = 0
@@ -526,15 +528,6 @@ def main():
 
         cycles = cycles + 1
 
-        '''if random.randint(0, 1):
-            direction = random.randint(-1, 1)
-            s.turn(direction, 0)
-            print("X: ", direction)
-        else:
-            direction = random.randint(-1, 1)
-            s.turn(0, direction)
-            print("Y: ", direction)'''
-
         clock.tick(10)
         s.move()
 
@@ -553,7 +546,7 @@ def main():
                     or s.body[x].pos[1] > 19:
 
                 print("Score: ", len(s.body))
-                message_box("You Lost!", "Play again...")
+                #message_box("You Lost!", "Play again...")
                 s.reset((10, 10))
                 cycles = 0
                 break
@@ -577,9 +570,15 @@ def main():
         dbgout["Food_ur dr dl ul: "] = "     {}, {}, {}, {},".format(ki.dist["food"]["ur"], ki.dist["food"]["dr"],
                                                             ki.dist["food"]["dl"], ki.dist["food"]["ul"])
 
+        #update the interfacetextfile
+        ki.fileinterface.update([('cycles', cycles)]) 
+        ki.fileinterface.update([('length', len(s.body))]) 
+        ki.fileinterface.update([('snakedir', [('x', s.dirnx), ('y', s.dirny)])])
+        ki.fileinterface.update(ki.dist)         
+
         redrawWindow(win)
         update_dbg_view(win, dbgout)
-
+        write_file()
         pygame.display.update()
     pass
 
