@@ -11,7 +11,6 @@ class cube(object):
     rows = 20
     w = 500
 
-
     def __init__(self, start, dirnx=1, dirny=0, color=(255, 0, 0)):
         self.pos = start
         self.dirnx = 1
@@ -46,7 +45,6 @@ class snake(object):
         self.color = color
         self.head = cube(pos)
         self.body.append(self.head)
-
         self.dirnx = 1
         self.dirny = 0
 
@@ -57,26 +55,79 @@ class snake(object):
 
     def move(self):
 
+        global debug_flag
+        if debug_flag:
+            key_flag = True
+            while key_flag:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
+                    keys = pygame.key.get_pressed()
 
-            keys = pygame.key.get_pressed()  
+                    for key in keys:
+                        if keys[pygame.K_LEFT]:
+                            '''self.dirnx = -1
+                            self.dirny = 0
+                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move left
+                            self.turn(-1, 0)    # New code
 
-            for key in keys:
-                if keys[pygame.K_LEFT]:
-                    self.turn(-1, 0)    # New code
- 
-                elif keys[pygame.K_RIGHT]:
-                    self.turn(1, 0)     # New code
- 
-                elif keys[pygame.K_UP]:
-                    self.turn(0, -1)    # New code
- 
-                elif keys[pygame.K_DOWN]:
-                    self.turn(0, 1)     # New code
- 
+                        elif keys[pygame.K_RIGHT]:
+                            '''self.dirnx = 1
+                            self.dirny = 0
+                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move right
+                            self.turn(1, 0)     # New code
+
+                        elif keys[pygame.K_UP]:
+                            '''self.dirnx = 0
+                            self.dirny = -1
+                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move up
+                            self.turn(0, -1)    # New code
+
+                        elif keys[pygame.K_DOWN]:
+                            '''self.dirnx = 0
+                            self.dirny = 1
+                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move down
+                            self.turn(0, 1)     # New code
+                        elif keys[pygame.K_d]:
+                            debug_flag = False
+                    if sum(list(keys)):
+                        key_flag = False
+        else:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+
+                keys = pygame.key.get_pressed()
+
+                for key in keys:
+                    if keys[pygame.K_LEFT]:
+                        '''self.dirnx = -1
+                        self.dirny = 0
+                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move left
+                        self.turn(-1, 0)  # New code
+
+                    elif keys[pygame.K_RIGHT]:
+                        '''self.dirnx = 1
+                        self.dirny = 0
+                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move right
+                        self.turn(1, 0)  # New code
+
+                    elif keys[pygame.K_UP]:
+                        '''self.dirnx = 0
+                        self.dirny = -1
+                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move up
+                        self.turn(0, -1)  # New code
+
+                    elif keys[pygame.K_DOWN]:
+                        '''self.dirnx = 0
+                        self.dirny = 1
+                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move down
+                        self.turn(0, 1)  # New code
+                    elif keys[pygame.K_d]:
+                        debug_flag = True
+
+
         for i, c in enumerate(self.body):
             p = c.pos[:]
             if p in self.turns:
@@ -395,50 +446,50 @@ def get_distances():
 
     # Get Distance from Head to food
     if s.body[0].pos[0] == snack.pos[0] and s.body[0].pos[1] > snack.pos[1]:
-        ki.dist["food"]["up"] = s.body[0].pos[1] - snack.pos[1] - 1
+        ki.dist["food"]["up"] = s.body[0].pos[1] - snack.pos[1]
     else:
         ki.dist["food"]["up"] = 0
 
     if s.body[0].pos[0] == snack.pos[0] and s.body[0].pos[1] < snack.pos[1]:
-        ki.dist["food"]["dn"] = snack.pos[1] - s.body[0].pos[1] - 1
+        ki.dist["food"]["dn"] = snack.pos[1] - s.body[0].pos[1]
     else:
         ki.dist["food"]["dn"] = 0
 
     if s.body[0].pos[1] == snack.pos[1] and s.body[0].pos[0] > snack.pos[0]:
-        ki.dist["food"]["le"] = s.body[0].pos[0] - snack.pos[0] - 1
+        ki.dist["food"]["le"] = s.body[0].pos[0] - snack.pos[0]
     else:
         ki.dist["food"]["le"] = 0
 
     if s.body[0].pos[1] == snack.pos[1] and s.body[0].pos[0] < snack.pos[0]:
-        ki.dist["food"]["rg"] = snack.pos[0] - s.body[0].pos[0] - 1
+        ki.dist["food"]["rg"] = snack.pos[0] - s.body[0].pos[0]
     else:
         ki.dist["food"]["rg"] = 0
 
     if snack.pos[0] - s.body[0].pos[0] == s.body[0].pos[1] - snack.pos[1] \
             and (s.body[0].pos[0] < snack.pos[0]) \
             and (s.body[0].pos[1] > snack.pos[1]):
-        ki.dist["food"]["ur"] = s.body[0].pos[1] - snack.pos[1] - 1
+        ki.dist["food"]["ur"] = s.body[0].pos[1] - snack.pos[1]
     else:
         ki.dist["food"]["ur"] = 0
 
     if s.body[0].pos[0] - snack.pos[0] == s.body[0].pos[1] - snack.pos[1] \
             and (s.body[0].pos[0] < snack.pos[0]) \
             and (s.body[0].pos[1] < snack.pos[1]):
-        ki.dist["food"]["dr"] = snack.pos[1] - s.body[0].pos[1] - 1
+        ki.dist["food"]["dr"] = snack.pos[1] - s.body[0].pos[1]
     else:
         ki.dist["food"]["dr"] = 0
 
     if s.body[0].pos[0] - snack.pos[0] == s.body[0].pos[1] - snack.pos[1] \
             and (s.body[0].pos[0] > snack.pos[0]) \
             and (s.body[0].pos[1] > snack.pos[1]):
-        ki.dist["food"]["ul"] = s.body[0].pos[1] - snack.pos[1] - 1
+        ki.dist["food"]["ul"] = s.body[0].pos[1] - snack.pos[1]
     else:
         ki.dist["food"]["ul"] = 0
 
     if snack.pos[0] - s.body[0].pos[0] == s.body[0].pos[1] - snack.pos[1] \
             and (s.body[0].pos[0] > snack.pos[0]) \
             and (s.body[0].pos[1] < snack.pos[1]):
-        ki.dist["food"]["dl"] = snack.pos[1] - s.body[0].pos[1] - 1
+        ki.dist["food"]["dl"] = snack.pos[1] - s.body[0].pos[1]
     else:
         ki.dist["food"]["dl"] = 0
 
@@ -449,7 +500,9 @@ def write_file():
 
 
 def main():
-    global width, rows, s, snack, font, titlefont, ki, cycles
+    global width, rows, s, snack, font, titlefont, ki, debug_flag, cycles
+    debug_flag = False
+    
     width = 500
     rows = 20
     cycles = 0
