@@ -82,6 +82,9 @@ class snake(object):
                             self.currdir = (self.currdir + 1) % 4
                             self.turn( self.directions[self.currdir][0] , self.directions[self.currdir][1] )  # New code
                         
+                        elif keys[pygame.K_d]:
+                            debug_flag = False
+
                         elif keys[pygame.K_q]:
                             s.reset((10, 10))
                             cycles = 0
