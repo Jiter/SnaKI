@@ -173,17 +173,20 @@ class snake(object):
 
 class SnaKI(object):
 
-    #### Directions from SnakeHead
+    #### Directions are from SnakeView
     #    
-    #    ul    up    ur     
+    #          fw     
     #    le   [SN]   rg
-    #    dl    dn    dr
-    #     
+    #         [SN]   
+    #          be
+    #
+    #   Block is blocked Field with View Distance 1
+    #   food is direction of food over the whole Field
+    #
     ####
 
-    dist = {"wall" : {"up" : 0, "ur" : 0, "rg" : 0, "dr" : 0, "dn" : 0, "dl" : 0, "le" : 0, "ul" : 0}, \
-           "snake" : {"up" : 0, "ur" : 0, "rg" : 0, "dr" : 0, "dn" : 0, "dl" : 0, "le" : 0, "ul" : 0}, \
-            "food" : {"up" : 0, "ur" : 0, "rg" : 0, "dr" : 0, "dn" : 0, "dl" : 0, "le" : 0, "ul" : 0}}
+    dist = {"block" : {"fw" : 0, "rg" : 0, "le" : 0}, \
+            "food" : {"fw" : 0, "rg" : 0, "be" : 0, "le" : 0}}
     
     fileinterface = {}
 
@@ -254,244 +257,6 @@ def update_dbg_view(surface, output):
         surface.blit(text, (ypos + 100, xpos))
         xpos = xpos + 12
 
-def get_distances():
-
-    # Get Distance from Head to Walls
-
-    ki.dist["wall"]["up"] = s.head.pos[1]
-    ki.dist["wall"]["dn"] = rows - s.head.pos[1] - 1
-    ki.dist["wall"]["le"] = s.head.pos[0]
-    ki.dist["wall"]["rg"] = rows - s.head.pos[0] - 1
-
-    if ((rows - 1) - s.body[0].pos[0]) >= s.body[0].pos[1]:
-        ki.dist["wall"]["ur"] = s.body[0].pos[1]
-    else:
-        ki.dist["wall"]["ur"] = rows - s.body[0].pos[0] - 1
-
-    if s.body[0].pos[0] <= s.body[0].pos[1]:
-        ki.dist["wall"]["dr"] = rows - s.body[0].pos[1] - 1
-    else:
-        ki.dist["wall"]["dr"] = rows - s.body[0].pos[0] - 1
-
-    if s.body[0].pos[0] >= s.body[0].pos[1]:
-        ki.dist["wall"]["ul"] = s.body[0].pos[1]
-    else:
-        ki.dist["wall"]["ul"] = s.body[0].pos[0]
-
-    if ((rows - 1) - s.body[0].pos[0]) <= s.body[0].pos[1]:
-        ki.dist["wall"]["dl"] = rows - s.body[0].pos[1] - 1
-    else:
-        ki.dist["wall"]["dl"] = ki.dist["wall"]["dl"] = s.body[0].pos[0]
-
-    # Get Distance from Head to Body
-    for body_part in s.body:
-        if s.body[0] != body_part \
-                and s.body[0].pos[0] == body_part.pos[0] \
-                and s.body[0].pos[1] > body_part.pos[1]:
-            ki.dist["snake"]["up"] = s.body[0].pos[1] - body_part.pos[1] - 1
-            break
-        elif body_part == s.body[-1]:
-            ki.dist["snake"]["up"] = 0
-
-    for body_part in s.body:
-        if s.body[0] != body_part \
-                and s.body[0].pos[0] == body_part.pos[0] \
-                and s.body[0].pos[1] < body_part.pos[1]:
-            ki.dist["snake"]["dn"] = body_part.pos[1] - s.body[0].pos[1] - 1
-            break
-        elif body_part == s.body[-1]:
-            ki.dist["snake"]["dn"] = 0
-
-    for body_part in s.body:
-        if s.body[0] != body_part \
-                and s.body[0].pos[1] == body_part.pos[1] \
-                and s.body[0].pos[0] > body_part.pos[0]:
-            ki.dist["snake"]["le"] = s.body[0].pos[0] - body_part.pos[0] - 1
-            break
-        elif body_part == s.body[-1]:
-            ki.dist["snake"]["le"] = 0
-
-    for body_part in s.body:
-        if s.body[0] != body_part \
-                and s.body[0].pos[1] == body_part.pos[1] \
-                and s.body[0].pos[0] < body_part.pos[0]:
-            ki.dist["snake"]["rg"] = body_part.pos[0] - s.body[0].pos[0] - 1
-            break
-        elif body_part == s.body[-1]:
-            ki.dist["snake"]["rg"] = 0
-
-    if s.body[0].pos[0] < (rows - 1) and s.body[0].pos[1] > 0:
-        found = False
-        if ((rows - 1) - s.body[0].pos[0]) >= s.body[0].pos[1]:
-            for i in range(s.body[0].pos[1]):
-                for body_part in s.body:
-                    if s.body[0] != body_part \
-                            and s.body[0].pos[0] + i + 1 == body_part.pos[0] \
-                            and s.body[0].pos[1] - i - 1 == body_part.pos[1]:
-                        ki.dist["snake"]["ur"] = s.body[0].pos[1] - body_part.pos[1] - 1
-                        found = True
-                        break
-                    elif body_part == s.body[-1] and i == (s.body[0].pos[1] - 1):
-                        ki.dist["snake"]["ur"] = 0
-                if found:
-                    break
-        else:
-            for i in range((rows - 1) - s.body[0].pos[0]):
-                for body_part in s.body:
-                    if s.body[0] != body_part \
-                            and s.body[0].pos[0] + i + 1 == body_part.pos[0] \
-                            and s.body[0].pos[1] - i - 1 == body_part.pos[1]:
-                        ki.dist["snake"]["ur"] = s.body[0].pos[1] - body_part.pos[1] - 1
-                        found = True
-                        break
-                    elif body_part == s.body[-1] and i == ((rows - 1) - s.body[0].pos[0] - 1):
-                        ki.dist["snake"]["ur"] = 0
-                if found:
-                    break
-    else:
-        ki.dist["snake"]["ur"] = 0
-
-    if s.body[0].pos[0] < (rows - 1) and s.body[0].pos[1] < (rows - 1):
-        found = False
-        if s.body[0].pos[0] <= s.body[0].pos[1]:
-            for i in range((rows - 1) - s.body[0].pos[1]):
-                for body_part in s.body:
-                    if s.body[0] != body_part \
-                            and s.body[0].pos[0] + i + 1 == body_part.pos[0] \
-                            and s.body[0].pos[1] + i + 1 == body_part.pos[1]:
-                        ki.dist["snake"]["dr"] = body_part.pos[1] - s.body[0].pos[1] - 1
-                        found = True
-                        break
-                    elif body_part == s.body[-1] and i == ((rows - 1) - s.body[0].pos[1] - 1):
-                        ki.dist["snake"]["dr"] = 0
-                if found:
-                    break
-        else:
-            for i in range((rows - 1) - s.body[0].pos[0]):
-                for body_part in s.body:
-                    if s.body[0] != body_part \
-                            and s.body[0].pos[0] + i + 1 == body_part.pos[0] \
-                            and s.body[0].pos[1] + i + 1 == body_part.pos[1]:
-                        ki.dist["snake"]["dr"] = body_part.pos[1] - s.body[0].pos[1] - 1
-                        found = True
-                        break
-                    elif body_part == s.body[-1] and i == ((rows - 1) - s.body[0].pos[0] - 1):
-                        ki.dist["snake"]["dr"] = 0
-                if found:
-                    break
-    else:
-        ki.dist["snake"]["dr"] = 0
-
-    if s.body[0].pos[0] > 0 and s.body[0].pos[1] > 0:
-        found = False
-        if s.body[0].pos[0] >= (s.body[0].pos[1]):
-            for i in range(s.body[0].pos[1]):
-                for body_part in s.body:
-                    if s.body[0] != body_part \
-                            and s.body[0].pos[0] - i - 1 == body_part.pos[0] \
-                            and s.body[0].pos[1] - i - 1 == body_part.pos[1]:
-                        ki.dist["snake"]["ul"] = s.body[0].pos[1] - body_part.pos[1] - 1
-                        found = True
-                        break
-                    elif body_part == s.body[-1] and i == (s.body[0].pos[1] - 1):
-                        ki.dist["snake"]["ul"] = 0
-                if found:
-                    break
-        else:
-            for i in range(s.body[0].pos[0]):
-                for body_part in s.body:
-                    if s.body[0] != body_part \
-                            and s.body[0].pos[0] - i - 1 == body_part.pos[0] \
-                            and s.body[0].pos[1] - i - 1 == body_part.pos[1]:
-                        ki.dist["snake"]["ul"] = s.body[0].pos[1] - body_part.pos[1] - 1
-                        found = True
-                        break
-                    elif body_part == s.body[-1] and i == (s.body[0].pos[0] - 1):
-                        ki.dist["snake"]["ul"] = 0
-                if found:
-                    break
-    else:
-        ki.dist["snake"]["ul"] = 0
-
-    if s.body[0].pos[0] > 0 and s.body[0].pos[1] < (rows - 1):
-        found = False
-        if s.body[0].pos[0] >= ((rows - 1) - s.body[0].pos[1]):
-            for i in range((rows - 1) - s.body[0].pos[1]):
-                for body_part in s.body:
-                    if s.body[0] != body_part \
-                            and s.body[0].pos[0] - i - 1 == body_part.pos[0] \
-                            and s.body[0].pos[1] + i + 1 == body_part.pos[1]:
-                        ki.dist["snake"]["dl"] = body_part.pos[1] - s.body[0].pos[1] - 1
-                        found = True
-                        break
-                    elif body_part == s.body[-1] and i == ((rows - 1) - s.body[0].pos[1] - 1):
-                        ki.dist["snake"]["dl"] = 0
-                if found:
-                    break
-        else:
-            for i in range(s.body[0].pos[0]):
-                for body_part in s.body:
-                    if s.body[0] != body_part \
-                            and s.body[0].pos[0] - i - 1 == body_part.pos[0] \
-                            and s.body[0].pos[1] + i + 1 == body_part.pos[1]:
-                        ki.dist["snake"]["dl"] = body_part.pos[1] - s.body[0].pos[1] - 1
-                        found = True
-                        break
-                    elif body_part == s.body[-1] and i == (s.body[0].pos[0] - 1):
-                        ki.dist["snake"]["dl"] = 0
-                if found:
-                    break
-    else:
-        ki.dist["snake"]["dl"] = 0
-
-    # Get Distance from Head to food
-    if s.body[0].pos[0] == snack.pos[0] and s.body[0].pos[1] > snack.pos[1]:
-        ki.dist["food"]["up"] = s.body[0].pos[1] - snack.pos[1]
-    else:
-        ki.dist["food"]["up"] = 0
-
-    if s.body[0].pos[0] == snack.pos[0] and s.body[0].pos[1] < snack.pos[1]:
-        ki.dist["food"]["dn"] = snack.pos[1] - s.body[0].pos[1]
-    else:
-        ki.dist["food"]["dn"] = 0
-
-    if s.body[0].pos[1] == snack.pos[1] and s.body[0].pos[0] > snack.pos[0]:
-        ki.dist["food"]["le"] = s.body[0].pos[0] - snack.pos[0]
-    else:
-        ki.dist["food"]["le"] = 0
-
-    if s.body[0].pos[1] == snack.pos[1] and s.body[0].pos[0] < snack.pos[0]:
-        ki.dist["food"]["rg"] = snack.pos[0] - s.body[0].pos[0]
-    else:
-        ki.dist["food"]["rg"] = 0
-
-    if snack.pos[0] - s.body[0].pos[0] == s.body[0].pos[1] - snack.pos[1] \
-            and (s.body[0].pos[0] < snack.pos[0]) \
-            and (s.body[0].pos[1] > snack.pos[1]):
-        ki.dist["food"]["ur"] = s.body[0].pos[1] - snack.pos[1]
-    else:
-        ki.dist["food"]["ur"] = 0
-
-    if s.body[0].pos[0] - snack.pos[0] == s.body[0].pos[1] - snack.pos[1] \
-            and (s.body[0].pos[0] < snack.pos[0]) \
-            and (s.body[0].pos[1] < snack.pos[1]):
-        ki.dist["food"]["dr"] = snack.pos[1] - s.body[0].pos[1]
-    else:
-        ki.dist["food"]["dr"] = 0
-
-    if s.body[0].pos[0] - snack.pos[0] == s.body[0].pos[1] - snack.pos[1] \
-            and (s.body[0].pos[0] > snack.pos[0]) \
-            and (s.body[0].pos[1] > snack.pos[1]):
-        ki.dist["food"]["ul"] = s.body[0].pos[1] - snack.pos[1]
-    else:
-        ki.dist["food"]["ul"] = 0
-
-    if snack.pos[0] - s.body[0].pos[0] == s.body[0].pos[1] - snack.pos[1] \
-            and (s.body[0].pos[0] > snack.pos[0]) \
-            and (s.body[0].pos[1] < snack.pos[1]):
-        ki.dist["food"]["dl"] = snack.pos[1] - s.body[0].pos[1]
-    else:
-        ki.dist["food"]["dl"] = 0
 
 def write_file():
     with open('interface.json', 'w') as file:
@@ -501,7 +266,7 @@ def write_file():
 
 def main():
     global width, rows, s, snack, font, titlefont, ki, debug_flag, cycles
-    debug_flag = False
+    debug_flag = True
     
     width = 500
     rows = 20
@@ -551,30 +316,15 @@ def main():
                 cycles = 0
                 break
 
-        get_distances()
-
         dbgout["Position"] = "{}, {}".format(s.body[0].pos[0], s.body[0].pos[1])
         dbgout["Length"] = len(s.body)
         dbgout["FPS"] = "{}".format(clock)
         dbgout["Cycles"] = cycles
-        dbgout["Wall_u d l r: "] = "     {}, {}, {}, {},".format(ki.dist["wall"]["up"], ki.dist["wall"]["dn"],
-                                                          ki.dist["wall"]["le"], ki.dist["wall"]["rg"])
-        dbgout["Wall_ur dr dl ul: "] = "     {}, {}, {}, {},".format(ki.dist["wall"]["ur"], ki.dist["wall"]["dr"],
-                                                          ki.dist["wall"]["dl"], ki.dist["wall"]["ul"])
-        dbgout["Snake_u d l r: "] = "     {}, {}, {}, {},".format(ki.dist["snake"]["up"], ki.dist["snake"]["dn"],
-                                                            ki.dist["snake"]["le"], ki.dist["snake"]["rg"])
-        dbgout["Snake_ur dr dl ul: "] = "     {}, {}, {}, {},".format(ki.dist["snake"]["ur"], ki.dist["snake"]["dr"],
-                                                            ki.dist["snake"]["dl"], ki.dist["snake"]["ul"])
-        dbgout["Food_u d l r: "] = "     {}, {}, {}, {},".format(ki.dist["food"]["up"], ki.dist["food"]["dn"],
-                                                            ki.dist["food"]["le"], ki.dist["food"]["rg"])
-        dbgout["Food_ur dr dl ul: "] = "     {}, {}, {}, {},".format(ki.dist["food"]["ur"], ki.dist["food"]["dr"],
-                                                            ki.dist["food"]["dl"], ki.dist["food"]["ul"])
 
         #update the interfacetextfile
-        ki.fileinterface.update([('cycles', cycles)]) 
-        ki.fileinterface.update([('length', len(s.body))]) 
-        ki.fileinterface.update([('snakedir', [('x', s.dirnx), ('y', s.dirny)])])
-        ki.fileinterface.update(ki.dist)         
+        ki.fileinterface.update([('cycles', cycles)])
+        ki.fileinterface.update([('length', len(s.body))])
+        ki.fileinterface.update(ki.dist)
 
         redrawWindow(win)
         update_dbg_view(win, dbgout)
