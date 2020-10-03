@@ -17,8 +17,8 @@ from keras.layers import Dense, Activation
 from keras.utils import to_categorical
 
 
-classes = 4
-batch_size = 64
+classes = 3
+batch_size = 7
 population = 20
 generations = 100
 threshold = 100
@@ -48,56 +48,40 @@ class KISnake():
     def read_input(self):
         ret = []
         ret.extend(self.dist['food'].values())
-        ret.extend(self.dist['wall'].values())
-        ret.extend(self.dist['snake'].values())
+        ret.extend(self.dist['block'].values())
         return ret
 
-    def out2keys(self):
 
-        self.keyboard.release(Key.up)
-        self.keyboard.release(Key.down)
+    def releasekeys(self):
         self.keyboard.release(Key.left)
         self.keyboard.release(Key.right)
+        self.keyboard.release('q')
+
+    def out2keys(self):
 
         idx = np.argmax(self.output)
 
         if idx == 0:
-            self.keyboard.press(Key.up)
+            print("f")
+            pass
         elif idx == 1:
-            self.keyboard.press(Key.down)
-        elif idx == 2:
             self.keyboard.press(Key.left)
-        elif idx == 3:
+            print("left")
+        elif idx == 2:
             self.keyboard.press(Key.right)
+            print("right")
         else:
             print("ERROR - SOMETHING Went wrong")
 
     def get_fitness(self):
 
-        temp_snakedir = [["x", 1], ["y", 0]]
-        factor_score = 50 # 0.05
-        factor_cycles = 1  # 0.01
-        factor_change_dir = 0  # 0.001
-        factor_fruit_view = 0  # 0.01
-        factor_fruit_same_dir = 0  # 0.04
-        factor_wall = 0  # 0.001
-        factor_body = 0  # 0.002
-
-        if max(ki.dist["food"]) != 0:
-            factor_fruit_view = 0.01
-        if ki.dist["snakedir"] != temp_snakedir:
-            factor_change_dir = 0.001
-#        if sum(ki.dist["food"]) != 0 and (ki.dist["snakedir"] != temp_snakedir):
-#            factor_fruit_same_dir = 0.04
-#            temp_snakedir = ki.dist["snakedir"]
-
-        ret = (ki.dist["length"] * factor_score + ki.dist["cycles"] * factor_cycles)
+        ret = 123
 
         return ret
 
     def play_game(self, model):
 
-        while True:     
+        while True:
             self.read_file()
             num = self.dist['cycles'] 
 
@@ -111,8 +95,9 @@ class KISnake():
 
             # when we could read a new dataset with new cycles, then we can do new calcs.
             if((num != self.lastcycle) & (self.gaming)):
+                self.releasekeys()     
                 self.lastcycle = num
-                # print("NEU - {}".format(num))
+                print("NEU - {}".format(num))
                 xtrain = np.array([self.read_input()])
 
                 self.output = model.predict(xtrain, batch_size=None, verbose=0)
@@ -128,6 +113,7 @@ class KISnake():
                     break
                 elif (num - self.lastfoodcycle) > 100:
                     print("Starved")
+                    self.keyboard.press('q')
                     self.lastlength = 1
                     self.lastfoodcycle = 0
                     break
@@ -153,7 +139,7 @@ class KISnake():
 
 def serve_model(epochs, units1, act1, units2, act2, classes, act3, loss, opt, summary=False):
     model = Sequential()
-    model.add(Dense(units1, input_shape=[24,]))
+    model.add(Dense(units1, input_shape=[7,]))
     model.add(Activation(act1))
     model.add(Dense(units2))
     model.add(Activation(act2))

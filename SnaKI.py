@@ -83,26 +83,35 @@ class snake(object):
                         elif keys[pygame.K_d]:
                             debug_flag = False
 
+                        elif keys[pygame.K_q]:
+                            s.reset((10, 10))
+                            cycles = 0
+
                     if sum(list(keys)):
                         key_flag = False
         else:
+
+            keys = pygame.key.get_pressed()
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
 
-                keys = pygame.key.get_pressed()
-
-                for key in keys:
+                if event.type == pygame.KEYDOWN:
                     if keys[pygame.K_LEFT]:
                         self.currdir = (self.currdir - 1) % 4
                         self.turn( self.directions[self.currdir][0] , self.directions[self.currdir][1] )  # New code
 
-                    elif keys[pygame.K_RIGHT]:
+                    if keys[pygame.K_RIGHT]:
                         self.currdir = (self.currdir + 1) % 4
                         self.turn( self.directions[self.currdir][0] , self.directions[self.currdir][1] )  # New code
-    
-                    elif keys[pygame.K_d]:
+
+                    if keys[pygame.K_d]:
                         debug_flag = True
+
+                    if keys[pygame.K_q]:
+                        s.reset((10, 10))
+                        cycles = 0
 
         for i, c in enumerate(self.body):
             p = c.pos[:]
@@ -169,6 +178,52 @@ class SnaKI(object):
     def __init__(self):
         pass
 
+    def get_foodquad(self):
+
+        ki.dist["food"]["fw"] = False
+        ki.dist["food"]["rg"] = False
+        ki.dist["food"]["be"] = False
+        ki.dist["food"]["le"] = False
+
+        if s.currdir == 0: # DOWN
+            if s.head.pos[0] == snack.pos[0] and s.head.pos[1] < snack.pos[1]:
+                ki.dist["food"]["fw"] = True
+            elif s.head.pos[1] > snack.pos[1]:
+                ki.dist["food"]["be"] = True
+            elif s.head.pos[0] < snack.pos[0] and s.head.pos[1] <= snack.pos[1]:
+                ki.dist["food"]["le"] = True
+            elif s.head.pos[0] > snack.pos[0] and s.head.pos[1] <= snack.pos[1]:
+                ki.dist["food"]["rg"] = True
+        elif s.currdir == 1: # RIGHT
+            if s.head.pos[1] == snack.pos[1] and s.head.pos[0] < snack.pos[0]:
+                ki.dist["food"]["fw"] = True
+            elif s.head.pos[0] > snack.pos[0]:
+                ki.dist["food"]["be"] = True
+            elif s.head.pos[1] > snack.pos[1] and s.head.pos[0] <= snack.pos[0]:
+                ki.dist["food"]["le"] = True
+            elif s.head.pos[1] < snack.pos[1] and s.head.pos[0] <= snack.pos[0]:
+                ki.dist["food"]["rg"] = True
+        elif s.currdir == 2: # UP
+            if s.head.pos[0] == snack.pos[0] and s.head.pos[1] > snack.pos[1]:
+                ki.dist["food"]["fw"] = True
+            elif s.head.pos[1] < snack.pos[1]:
+                ki.dist["food"]["be"] = True
+            elif s.head.pos[0] > snack.pos[0] and s.head.pos[1] >= snack.pos[1]:
+                ki.dist["food"]["le"] = True
+            elif s.head.pos[0] < snack.pos[0] and s.head.pos[1] >= snack.pos[1]:
+                ki.dist["food"]["rg"] = True
+        elif s.currdir == 3: # LEFT
+            if s.head.pos[1] == snack.pos[1] and s.head.pos[0] > snack.pos[0]:
+                ki.dist["food"]["fw"] = True
+            elif s.head.pos[0] < snack.pos[0]:
+                ki.dist["food"]["be"] = True
+            elif s.head.pos[1] < snack.pos[1] and s.head.pos[0] >= snack.pos[0]:
+                ki.dist["food"]["le"] = True
+            elif s.head.pos[1] > snack.pos[1] and s.head.pos[0] >= snack.pos[0]:
+                ki.dist["food"]["rg"] = True
+
+
+
     def get_blocks(self):
 
         next_xcoord = s.body[0].pos[0] + s.head.dirnx 
@@ -195,13 +250,7 @@ class SnaKI(object):
         else:
             ki.dist["block"]["rg"] = False
        
-            
-
-
-        ki.dist["food"]["fw"] = False
-        ki.dist["food"]["rg"] = False
-        ki.dist["food"]["be"] = False
-        ki.dist["food"]["le"] = False
+        
 
 
 
@@ -279,6 +328,7 @@ def write_file():
 def main():
     global width, rows, s, snack, font, titlefont, ki, debug_flag, cycles
     debug_flag = False
+    reset_flag = 0
     
     width = 500
     rows = 20
@@ -308,6 +358,7 @@ def main():
         clock.tick(10)
         s.move()
         ki.get_blocks()
+        ki.get_foodquad()
 
         if s.body[0].pos == snack.pos:
             s.addCube()
