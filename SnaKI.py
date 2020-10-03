@@ -179,18 +179,29 @@ class SnaKI(object):
         next_rycoord = s.body[0].pos[1] + s.directions[(s.currdir - 1) % 4][1] 
 
         #print("fw: {}, {}\nle: {}, {}\nre: {}, {}\n".format(next_xcoord, next_ycoord, next_lxcoord, next_lycoord, next_rxcoord, next_rycoord))
-        if ((next_ycoord not in range(0, 20)) or (next_xcoord not in range(0, 20))):
+        if ((next_ycoord not in range(0, 20)) or (next_xcoord not in range(0, 20))) or \
+            (next_xcoord, next_ycoord) in map(lambda z: z.pos, s.body[1:]):
             ki.dist["block"]["fw"] = True
         else:
             ki.dist["block"]["fw"] = False
-        if ((next_lycoord not in range(0, 20)) or (next_lxcoord not in range(0, 20))):
+        if ((next_lycoord not in range(0, 20)) or (next_lxcoord not in range(0, 20))) or \
+            (next_lxcoord, next_lycoord) in map(lambda z: z.pos, s.body[1:]):
             ki.dist["block"]["le"] = True
         else:
             ki.dist["block"]["le"] = False
-        if ((next_rycoord not in range(0, 20)) or (next_rxcoord not in range(0, 20))):
+        if ((next_rycoord not in range(0, 20)) or (next_rxcoord not in range(0, 20))) or \
+            (next_rxcoord, next_rycoord) in map(lambda z: z.pos, s.body[1:]):
             ki.dist["block"]["rg"] = True
         else:
             ki.dist["block"]["rg"] = False
+       
+            
+
+
+        ki.dist["food"]["fw"] = False
+        ki.dist["food"]["rg"] = False
+        ki.dist["food"]["be"] = False
+        ki.dist["food"]["le"] = False
 
 
 
