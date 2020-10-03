@@ -41,12 +41,20 @@ class snake(object):
     body = []
     turns = {}
 
+
+
     def __init__(self, color, pos):
         self.color = color
         self.head = cube(pos)
         self.body.append(self.head)
         self.dirnx = 1
         self.dirny = 0
+
+        self.currdir  = 0
+        self.directions = {     0: (0, 1),
+                                1: (1, 0),
+                                2: (0, -1),
+                                3: (-1, 0)}
 
     def turn(self, x, y):
         self.dirnx = x
@@ -67,30 +75,16 @@ class snake(object):
 
                     for key in keys:
                         if keys[pygame.K_LEFT]:
-                            '''self.dirnx = -1
-                            self.dirny = 0
-                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move left
-                            self.turn(-1, 0)    # New code
+                            self.currdir = (self.currdir - 1) % 4
+                            self.turn( self.directions[self.currdir][0] , self.directions[self.currdir][1] )  # New code
 
                         elif keys[pygame.K_RIGHT]:
-                            '''self.dirnx = 1
-                            self.dirny = 0
-                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move right
-                            self.turn(1, 0)     # New code
+                            self.currdir = (self.currdir + 1) % 4
+                            self.turn( self.directions[self.currdir][0] , self.directions[self.currdir][1] )  # New code
 
-                        elif keys[pygame.K_UP]:
-                            '''self.dirnx = 0
-                            self.dirny = -1
-                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move up
-                            self.turn(0, -1)    # New code
-
-                        elif keys[pygame.K_DOWN]:
-                            '''self.dirnx = 0
-                            self.dirny = 1
-                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move down
-                            self.turn(0, 1)     # New code
                         elif keys[pygame.K_d]:
                             debug_flag = False
+
                     if sum(list(keys)):
                         key_flag = False
         else:
@@ -102,31 +96,15 @@ class snake(object):
 
                 for key in keys:
                     if keys[pygame.K_LEFT]:
-                        '''self.dirnx = -1
-                        self.dirny = 0
-                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move left
-                        self.turn(-1, 0)  # New code
+                        self.currdir = (self.currdir - 1) % 4
+                        self.turn( self.directions[self.currdir][0] , self.directions[self.currdir][1] )  # New code
 
                     elif keys[pygame.K_RIGHT]:
-                        '''self.dirnx = 1
-                        self.dirny = 0
-                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move right
-                        self.turn(1, 0)  # New code
-
-                    elif keys[pygame.K_UP]:
-                        '''self.dirnx = 0
-                        self.dirny = -1
-                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move up
-                        self.turn(0, -1)  # New code
-
-                    elif keys[pygame.K_DOWN]:
-                        '''self.dirnx = 0
-                        self.dirny = 1
-                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move down
-                        self.turn(0, 1)  # New code
+                        self.currdir = (self.currdir + 1) % 4
+                        self.turn( self.directions[self.currdir][0] , self.directions[self.currdir][1] )  # New code
+    
                     elif keys[pygame.K_d]:
                         debug_flag = True
-
 
         for i, c in enumerate(self.body):
             p = c.pos[:]
@@ -192,6 +170,18 @@ class SnaKI(object):
 
     def __init__(self):
         pass
+
+    def get_blocks(self):
+
+
+
+        if (s.head.dirnx == 0 & s.head.dirny == 1):
+
+            ki.dist["block"]["fw"] = 0
+            ki.dist["block"]["rg"] = 0
+            ki.dist["block"]["le"] = 0	
+
+
 
 def drawGrid(w, rows, surface):
     sizeBtwn = w // rows
@@ -266,7 +256,7 @@ def write_file():
 
 def main():
     global width, rows, s, snack, font, titlefont, ki, debug_flag, cycles
-    debug_flag = True
+    debug_flag = False
     
     width = 500
     rows = 20
@@ -320,6 +310,10 @@ def main():
         dbgout["Length"] = len(s.body)
         dbgout["FPS"] = "{}".format(clock)
         dbgout["Cycles"] = cycles
+         
+        dbgout["dirx"] = s.head.dirnx
+
+        dbgout["diry"] = s.head.dirny    
 
         #update the interfacetextfile
         ki.fileinterface.update([('cycles', cycles)])
