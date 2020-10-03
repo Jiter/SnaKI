@@ -49,6 +49,7 @@ class snake(object):
         self.body.append(self.head)
         self.dirnx = 1
         self.dirny = 0
+        self.dir = "right"
 
     def turn(self, x, y):
         self.dirnx = x
@@ -69,28 +70,32 @@ class snake(object):
 
                     for key in keys:
                         if keys[pygame.K_LEFT]:
-                            '''self.dirnx = -1
-                            self.dirny = 0
-                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move left
-                            self.turn(-1, 0)    # New code
+                            if self.dir == "right":
+                                left_key_pressed
+                                self.turn(0, -1)
+                                self.dir = "up"
+                                print(self.dir)
+                                print(self.dirnx, self.dirny)
+                            if self.dir == "up":
+                                self.turn(-1, 0)
+                                self.dir = "left"
+                                print(self.dir)
+                                print(self.dirnx, self.dirny)
+                            if self.dir == "left":
+                                self.turn(0, 1)
+                                self.dir = "down"
+                                print(self.dir)
+                                print(self.dirnx, self.dirny)
+                            if self.dir == "down":
+                                self.turn(1, 0)
+                                self.dir = "right"
+                                print(self.dir)
+                                print(self.dirnx, self.dirny)
+                            left_key_pressed = False
 
                         elif keys[pygame.K_RIGHT]:
-                            '''self.dirnx = 1
-                            self.dirny = 0
-                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move right
                             self.turn(1, 0)     # New code
 
-                        elif keys[pygame.K_UP]:
-                            '''self.dirnx = 0
-                            self.dirny = -1
-                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move up
-                            self.turn(0, -1)    # New code
-
-                        elif keys[pygame.K_DOWN]:
-                            '''self.dirnx = 0
-                            self.dirny = 1
-                            self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move down
-                            self.turn(0, 1)     # New code
                         elif keys[pygame.K_d]:
                             debug_flag = False
                     if sum(list(keys)):
@@ -105,28 +110,28 @@ class snake(object):
 
                 for key in keys:
                     if keys[pygame.K_LEFT]:
-                        '''self.dirnx = -1
-                        self.dirny = 0
-                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move left
-                        self.turn(-1, 0)  # New code
+                        self.turn(-1, 0)
+                        self.dir = "left"
+                        print(self.dir)
+                        print(self.dirnx, self.dirny)
 
                     elif keys[pygame.K_RIGHT]:
-                        '''self.dirnx = 1
-                        self.dirny = 0
-                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move right
-                        self.turn(1, 0)  # New code
+                        self.turn(1, 0)
+                        self.dir = "right"
+                        print(self.dir)
+                        print(self.dirnx, self.dirny)
 
                     elif keys[pygame.K_UP]:
-                        '''self.dirnx = 0
-                        self.dirny = -1
-                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move up
-                        self.turn(0, -1)  # New code
+                        self.turn(0, -1)
+                        self.dir = "up"
+                        print(self.dir)
+                        print(self.dirnx, self.dirny)
 
                     elif keys[pygame.K_DOWN]:
-                        '''self.dirnx = 0
-                        self.dirny = 1
-                        self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]'''  # Old code to move down
-                        self.turn(0, 1)  # New code
+                        self.turn(0, 1)
+                        self.dir = "down"
+                        print(self.dir)
+                        print(self.dirnx, self.dirny)
                     elif keys[pygame.K_d]:
                         debug_flag = True
 
