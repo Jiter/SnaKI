@@ -62,20 +62,20 @@ class KISnake():
         idx = np.argmax(self.output)
 
         if idx == 0:
-            print("f")
+            #print("f")
             pass
         elif idx == 1:
             self.keyboard.press(Key.left)
-            print("left")
+            #print("left")
         elif idx == 2:
             self.keyboard.press(Key.right)
-            print("right")
+            #print("right")
         else:
             print("ERROR - SOMETHING Went wrong")
 
     def get_fitness(self):
 
-        ret = 123
+        ret = self.lastcycle + 10 * self.lastlength
 
         return ret
 
@@ -97,7 +97,7 @@ class KISnake():
             if((num != self.lastcycle) & (self.gaming)):
                 self.releasekeys()     
                 self.lastcycle = num
-                print("NEU - {}".format(num))
+                #print("NEU - {}".format(num))
                 xtrain = np.array([self.read_input()])
 
                 self.output = model.predict(xtrain, batch_size=None, verbose=0)
@@ -201,16 +201,16 @@ def fitness(networks):
         loss = hyperparams['loss']
         opt = hyperparams['optimizer']
 
-#        try:
-        model = serve_model(epochs, units1, act1, units2, act2, classes, act3, loss, opt)
+        try:
+            model = serve_model(epochs, units1, act1, units2, act2, classes, act3, loss, opt)
 
-        accuracy = ki.play_game(model)
+            accuracy = ki.play_game(model)
 
-        network._accuracy = accuracy
-        print ('Accuracy: {}'.format(network._accuracy))
-#        except:
-#            network._accuracy = 0
-#            print ('Build failed.')
+            network._accuracy = accuracy
+            print ('Accuracy: {}'.format(network._accuracy))
+        except:
+            network._accuracy = 0
+            print ('Build failed.')
 
     return networks
 
