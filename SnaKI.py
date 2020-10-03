@@ -378,6 +378,7 @@ def main():
                 #message_box("You Lost!", "Play again...")
                 s.reset((10, 10))
                 cycles = 0
+                snack = cube(randomSnack(rows, s), color=(0, 255, 0))
                 break
 
         dbgout["Position"] = "{}, {}".format(s.body[0].pos[0], s.body[0].pos[1])
