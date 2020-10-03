@@ -70,31 +70,16 @@ class snake(object):
 
                     for key in keys:
                         if keys[pygame.K_LEFT]:
-                            if self.dir == "right":
-                                left_key_pressed
-                                self.turn(0, -1)
-                                self.dir = "up"
-                                print(self.dir)
-                                print(self.dirnx, self.dirny)
-                            if self.dir == "up":
-                                self.turn(-1, 0)
-                                self.dir = "left"
-                                print(self.dir)
-                                print(self.dirnx, self.dirny)
-                            if self.dir == "left":
-                                self.turn(0, 1)
-                                self.dir = "down"
-                                print(self.dir)
-                                print(self.dirnx, self.dirny)
-                            if self.dir == "down":
-                                self.turn(1, 0)
-                                self.dir = "right"
-                                print(self.dir)
-                                print(self.dirnx, self.dirny)
-                            left_key_pressed = False
+                            self.turn(-1, 0)
 
                         elif keys[pygame.K_RIGHT]:
-                            self.turn(1, 0)     # New code
+                            self.turn(1, 0)
+
+                        elif keys[pygame.K_UP]:
+                            self.turn(0, -1)
+
+                        elif keys[pygame.K_DOWN]:
+                            self.turn(0, 1)
 
                         elif keys[pygame.K_d]:
                             debug_flag = False
@@ -111,27 +96,15 @@ class snake(object):
                 for key in keys:
                     if keys[pygame.K_LEFT]:
                         self.turn(-1, 0)
-                        self.dir = "left"
-                        print(self.dir)
-                        print(self.dirnx, self.dirny)
 
                     elif keys[pygame.K_RIGHT]:
                         self.turn(1, 0)
-                        self.dir = "right"
-                        print(self.dir)
-                        print(self.dirnx, self.dirny)
 
                     elif keys[pygame.K_UP]:
                         self.turn(0, -1)
-                        self.dir = "up"
-                        print(self.dir)
-                        print(self.dirnx, self.dirny)
 
                     elif keys[pygame.K_DOWN]:
                         self.turn(0, 1)
-                        self.dir = "down"
-                        print(self.dir)
-                        print(self.dirnx, self.dirny)
                     elif keys[pygame.K_d]:
                         debug_flag = True
 
