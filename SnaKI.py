@@ -41,8 +41,6 @@ class snake(object):
     body = []
     turns = {}
 
-
-
     def __init__(self, color, pos):
         self.color = color
         self.head = cube(pos)
@@ -173,13 +171,26 @@ class SnaKI(object):
 
     def get_blocks(self):
 
+        next_xcoord = s.body[0].pos[0] + s.head.dirnx 
+        next_ycoord = s.body[0].pos[1] + s.head.dirny
+        next_lxcoord = s.body[0].pos[0] + s.directions[(s.currdir + 1) % 4][0] 
+        next_lycoord = s.body[0].pos[1] + s.directions[(s.currdir + 1) % 4][1] 
+        next_rxcoord = s.body[0].pos[0] + s.directions[(s.currdir - 1) % 4][0]  
+        next_rycoord = s.body[0].pos[1] + s.directions[(s.currdir - 1) % 4][1] 
 
-
-        if (s.head.dirnx == 0 & s.head.dirny == 1):
-
-            ki.dist["block"]["fw"] = 0
-            ki.dist["block"]["rg"] = 0
-            ki.dist["block"]["le"] = 0	
+        #print("fw: {}, {}\nle: {}, {}\nre: {}, {}\n".format(next_xcoord, next_ycoord, next_lxcoord, next_lycoord, next_rxcoord, next_rycoord))
+        if ((next_ycoord not in range(0, 20)) or (next_xcoord not in range(0, 20))):
+            ki.dist["block"]["fw"] = True
+        else:
+            ki.dist["block"]["fw"] = False
+        if ((next_lycoord not in range(0, 20)) or (next_lxcoord not in range(0, 20))):
+            ki.dist["block"]["le"] = True
+        else:
+            ki.dist["block"]["le"] = False
+        if ((next_rycoord not in range(0, 20)) or (next_rxcoord not in range(0, 20))):
+            ki.dist["block"]["rg"] = True
+        else:
+            ki.dist["block"]["rg"] = False
 
 
 
@@ -285,6 +296,7 @@ def main():
 
         clock.tick(10)
         s.move()
+        ki.get_blocks()
 
         if s.body[0].pos == snack.pos:
             s.addCube()
