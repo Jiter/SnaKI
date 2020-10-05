@@ -171,7 +171,7 @@ class SnaKI(object):
     ####
 
     dist = {"block" : {"fw" : 0, "rg" : 0, "le" : 0}, \
-            "food" : {"fw" : 0, "rg" : 0, "be" : 0, "le" : 0}}
+            "food" : {"fw" : 0, "rg" : 0, "be" : 0, "le" : 0, "dist": 0}}
     
     fileinterface = {}
 
@@ -221,6 +221,10 @@ class SnaKI(object):
                 ki.dist["food"]["le"] = True
             elif s.head.pos[1] > snack.pos[1] and s.head.pos[0] >= snack.pos[0]:
                 ki.dist["food"]["rg"] = True
+
+        ki.dist["food"]["dist"] = math.sqrt(pow(abs(s.head.pos[0]-snack.pos[0]), 2) \
+                                            +pow(abs(s.head.pos[1]-snack.pos[1]), 2))
+        print(ki.dist["food"]["dist"])
 
 
 
