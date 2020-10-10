@@ -369,10 +369,7 @@ def main():
 
         cycles = cycles + 1
 
-
         s.move()
-        ki.get_blocks()
-        ki.get_foodquad()
 
         if s.body[0].pos == snack.pos:
             s.addCube()
@@ -394,6 +391,9 @@ def main():
                 cycles = 0
                 snack = cube(randomSnack(rows, s), color=(0, 255, 0))
                 break
+        
+        ki.get_blocks()
+        ki.get_foodquad()
 
         dbgout["Position"] = "{}, {}".format(s.body[0].pos[0], s.body[0].pos[1])
         dbgout["Length"] = len(s.body)
@@ -404,6 +404,7 @@ def main():
         dbgout["diry"] = s.head.dirny
         dbgout["blocks"] = ki.dist['block']   
         dbgout["food"] = ki.dist['food']  
+        dbgout["distance"] = ki.dist['dist']
 
         #update the interfacetextfile
         ki.fileinterface.update([('cycles', cycles)])

@@ -89,10 +89,11 @@ class KISnake():
     def calc_fitness(self):
         scoredist = 0
 
+        #print(f"last:{self.lastdistance} dist: {self.distance}")
         if (self.lastdistance > self.distance):
             scoredist = 1
         else:
-            scoredist = -1.5
+            scoredist = -2
 
         self.fitness = self.fitness + scoredist
         #print(self.fitness)
@@ -100,10 +101,12 @@ class KISnake():
         self.lastdistance = self.distance
 
     def get_fitness(self):
-        #print("Fitness Returned: {}\n".format(self.lastcycle + (10 * self.lastlength)))
-        ret = self.fitness + ((self.dist['length'] - 1) * 100)
+
+        ret = self.fitness + ((self.dist['length'] - 1) * 100) + (self.lastcycle - self.lastfoodcycle)
         self.returnfitness = ret
         self.fitnesslength = self.dist['length']
+
+        #print(f"Fitness Returned: {ret}\n")
         return ret
 
     def play_game(self, model):
@@ -140,12 +143,10 @@ class KISnake():
 
                 self.out2keys()
                 self.calc_fitness()
-
                 #print(f"{num},{self.lastfoodcycle}")
 
-                
                 if self.lastcycle > num:
-                    print("LEAVE Game")
+                    print(f"LEAVE Game num:{num} lastcycle{self.lastcycle}")
                     self.returnfitness = self.returnfitness - 200
                     break
                 elif (num - self.lastfoodcycle) > 200:
@@ -158,11 +159,12 @@ class KISnake():
                 self.lastcycle = num
                 
         self.gaming = False
-        self.keyboard.press('q')
         print(f"Cycles: {self.lastcycle}, Fitness: {self.returnfitness}, Length: {self.fitnesslength}")
 
         with open(logfname, "a+") as file_object:
             file_object.write(f"{self.fitnesslength}, {self.lastcycle}, {self.returnfitness}, ")
+                    
+        self.keyboard.press('q')
 
         return self.returnfitness  
 
@@ -180,10 +182,15 @@ class KISnake():
                     # Append text at the end of file
                     file_object.write(f"Generation: {gen+1}\n")
 
+                print(f"1: {len(networks)}")
                 networks = fitness(networks)
+                print(f"2: {len(networks)}")
                 networks = selection(networks)
+                print(f"3: {len(networks)}")
                 networks = crossover(networks)
+                print(f"4: {len(networks)}")
                 networks = mutate(networks)
+                print(f"5: {len(networks)}")
 
 
 
@@ -205,7 +212,7 @@ class Network():
     def __init__(self):
         self._epochs = np.random.randint(1, 15)
 
-        self._units1 = np.random.randint(1, 50)
+        self._units1 = np.random.randint(1, 14)
         self._units2 = np.random.randint(1, 50)
 
         self._act1 = random.choice(['sigmoid', 'relu', 'softmax', 'tanh', 'elu', 'selu', 'linear'])
@@ -273,26 +280,26 @@ def fitness(networks):
 
 def selection(networks):
     networks = sorted(networks, key=lambda network: network._accuracy, reverse=True)
-    networks = networks[:int(0.2 * len(networks))]
+    networks = networks[:int(0.5 * len(networks))]
     return networks
 
 def crossover(networks):
     offspring = []
-    for _ in range(int((population - len(networks)) / 2)):
+    for _ in range(int(population * 0.25)):
         parent1 = random.choice(networks)
         parent2 = random.choice(networks)
         child1 = Network()
         child2 = Network()
 
         # Crossing over parent hyper-params
-        child1._epochs = int(parent1._epochs/4) + int(parent2._epochs/2)
-        child2._epochs = int(parent1._epochs/2) + int(parent2._epochs/4)
+        child1._epochs = int((parent1._epochs*4 + parent2._epochs*2)/6)
+        child2._epochs = int((parent1._epochs*2 + parent2._epochs*4)/6)
 
-        child1._units1 = int(parent1._units1/4) + int(parent2._units1/2)
-        child2._units1 = int(parent1._units1/2) + int(parent2._units1/4)
+        child1._units1 = int((parent1._units1*4 + parent2._units1*2)/6)
+        child2._units1 = int((parent1._units1*2 + parent2._units1*4)/6)
 
-        child1._units2 = int(parent1._units2/4) + int(parent2._units2/2)
-        child2._units2 = int(parent1._units2/2) + int(parent2._units2/4)
+        child1._units2 = int((parent1._units2*4 + parent2._units2*2)/6)
+        child2._units2 = int((parent1._units2*2 + parent2._units2*4)/6)
 
         child1._act1 = parent2._act2
         child2._act1 = parent1._act2
@@ -306,7 +313,7 @@ def crossover(networks):
         offspring.append(child1)
         offspring.append(child2)
 
-    networks.extend(offspring)
+        networks.extend(offspring)
 
     return networks
 
@@ -332,10 +339,15 @@ def kimain():
             # Append text at the end of file
             file_object.write(f"Generation: {gen+1}\n")
 
+        print(f"1: {len(networks)}")
         networks = fitness(networks)
+        print(f"2: {len(networks)}")
         networks = selection(networks)
+        print(f"3: {len(networks)}")
         networks = crossover(networks)
+        print(f"4: {len(networks)}")
         networks = mutate(networks)
+        print(f"5: {len(networks)}")
 
         for network in networks:
             if network._accuracy > threshold:
