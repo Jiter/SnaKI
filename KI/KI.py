@@ -5,6 +5,7 @@ import time
 
 from keras.models import Sequential
 from keras.layers import Dense
+
 from sklearn.model_selection import train_test_split
 import numpy as np
 
@@ -15,13 +16,18 @@ import random
 from keras.models import Sequential
 from keras.layers import Dense, Activation
 from keras.utils import to_categorical
+from keras.utils import plot_model
 
 
 classes = 3
 batch_size = 7
-population = 20
+population = 100
 generations = 100
-threshold = 100
+threshold = 2000
+
+glob_gen = -1
+
+logfname = "log-" + time.strftime("%Y%m%d-%H%M%S") + ".txt"
 
 class KISnake():
 
@@ -32,6 +38,11 @@ class KISnake():
     lastnum = 0
     lastlength = 0
     lastfoodcycle = 0
+    distance = 0
+    lastdistance = 0
+    fitness = 0
+    returnfitness = 0
+    fitnesslength = 0
     gaming = False
 
     output = []
@@ -55,6 +66,7 @@ class KISnake():
     def releasekeys(self):
         self.keyboard.release(Key.left)
         self.keyboard.release(Key.right)
+        self.keyboard.release('f')
         self.keyboard.release('q')
 
     def out2keys(self):
@@ -63,6 +75,7 @@ class KISnake():
 
         if idx == 0:
             #print("f")
+            self.keyboard.press('f')
             pass
         elif idx == 1:
             self.keyboard.press(Key.left)
@@ -73,10 +86,24 @@ class KISnake():
         else:
             print("ERROR - SOMETHING Went wrong")
 
+    def calc_fitness(self):
+        scoredist = 0
+
+        if (self.lastdistance > self.distance):
+            scoredist = 1
+        else:
+            scoredist = -1.5
+
+        self.fitness = self.fitness + scoredist
+        #print(self.fitness)
+
+        self.lastdistance = self.distance
+
     def get_fitness(self):
-
-        ret = self.lastcycle + 10 * self.lastlength
-
+        #print("Fitness Returned: {}\n".format(self.lastcycle + (10 * self.lastlength)))
+        ret = self.fitness + ((self.dist['length'] - 1) * 100)
+        self.returnfitness = ret
+        self.fitnesslength = self.dist['length']
         return ret
 
     def play_game(self, model):
@@ -84,19 +111,27 @@ class KISnake():
         while True:
             self.read_file()
             num = self.dist['cycles'] 
+            self.distance = self.dist['dist']
+
+            if num == 0 and self.gaming == False:
+                #print(f"start game {num}")
+                self.gaming = True
+                self.lastfoodcycle = 0
+                self.lastlength = 1
+                self.lastcycle = -1
+                self.lastdistance = 0
+                self.fitness = 0
+                self.returnfitness = 0
 
             if self.dist['length'] > self.lastlength:
                 self.lastfoodcycle = num   
 
             self.lastlength = self.dist['length'] 
 
-            if num == 0:
-                self.gaming = True
-
             # when we could read a new dataset with new cycles, then we can do new calcs.
             if((num != self.lastcycle) & (self.gaming)):
                 self.releasekeys()     
-                self.lastcycle = num
+
                 #print("NEU - {}".format(num))
                 xtrain = np.array([self.read_input()])
 
@@ -104,37 +139,52 @@ class KISnake():
                 #print(self.output)
 
                 self.out2keys()
+                self.calc_fitness()
 
                 #print(f"{num},{self.lastfoodcycle}")
 
-                if self.lastnum > num:
-                    print("LEAVE Game")
-                    self.lastnum = 0
-                    break
-                elif (num - self.lastfoodcycle) > 100:
-                    print("Starved")
-                    self.keyboard.press('q')
-                    self.lastlength = 1
-                    self.lastfoodcycle = 0
-                    break
                 
-                self.lastnum = num
-
+                if self.lastcycle > num:
+                    print("LEAVE Game")
+                    self.returnfitness = self.returnfitness - 200
+                    break
+                elif (num - self.lastfoodcycle) > 200:
+                    print("Starved")
+                    self.get_fitness()
+                    break
+                else:
+                    self.get_fitness()
+                
+                self.lastcycle = num
+                
         self.gaming = False
+        self.keyboard.press('q')
+        print(f"Cycles: {self.lastcycle}, Fitness: {self.returnfitness}, Length: {self.fitnesslength}")
 
-        return self.get_fitness()   
+        with open(logfname, "a+") as file_object:
+            file_object.write(f"{self.fitnesslength}, {self.lastcycle}, {self.returnfitness}, ")
+
+        return self.returnfitness  
 
                 
     def main(self):
+        global glob_gen
 
         networks = init_networks(population)
 
         for gen in range(generations):
+                glob_gen = gen
                 print ('Generation {}'.format(gen+1))
+                
+                with open(logfname, "a+") as file_object:
+                    # Append text at the end of file
+                    file_object.write(f"Generation: {gen+1}\n")
+
                 networks = fitness(networks)
                 networks = selection(networks)
                 networks = crossover(networks)
                 networks = mutate(networks)
+
 
 
 def serve_model(epochs, units1, act1, units2, act2, classes, act3, loss, opt, summary=False):
@@ -190,7 +240,9 @@ def init_networks(population):
     return [Network() for _ in range(population)]
 
 def fitness(networks):
+    i=0
     for network in networks:
+        i=i+1
         hyperparams = network.init_hyperparams()
         epochs = hyperparams['epochs']
         units1 = hyperparams['units1']
@@ -203,11 +255,16 @@ def fitness(networks):
 
         try:
             model = serve_model(epochs, units1, act1, units2, act2, classes, act3, loss, opt)
-
+            #plot_model(model, to_file=f'{glob_gen}_{i}_model.png', show_shapes=True, show_layer_names=False)
             accuracy = ki.play_game(model)
 
             network._accuracy = accuracy
             print ('Accuracy: {}'.format(network._accuracy))
+
+            with open(logfname, "a+") as file_object:
+                # Append text at the end of file
+                file_object.write(f"{hyperparams}\n")
+
         except:
             network._accuracy = 0
             print ('Build failed.')
@@ -217,7 +274,6 @@ def fitness(networks):
 def selection(networks):
     networks = sorted(networks, key=lambda network: network._accuracy, reverse=True)
     networks = networks[:int(0.2 * len(networks))]
-
     return networks
 
 def crossover(networks):
@@ -256,7 +312,7 @@ def crossover(networks):
 
 def mutate(networks):
     for network in networks:
-        if np.random.uniform(0, 1) <= 0.1:
+        if np.random.uniform(0, 1) <= 0.05:
             network._epochs += np.random.randint(0,100)
             network._units1 += np.random.randint(0,100)
             network._units2 += np.random.randint(0,100)
@@ -264,10 +320,17 @@ def mutate(networks):
     return networks
 
 def kimain():
+    global glob_gen
+
     networks = init_networks(population)
 
     for gen in range(generations):
+        glob_gen = gen
         print ('Generation {}'.format(gen+1))
+
+        with open(logfname, "a+") as file_object:
+            # Append text at the end of file
+            file_object.write(f"Generation: {gen+1}\n")
 
         networks = fitness(networks)
         networks = selection(networks)

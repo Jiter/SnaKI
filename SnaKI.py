@@ -38,6 +38,7 @@ class cube(object):
 
 
 class snake(object):
+    
     body = []
     turns = {}
 
@@ -48,7 +49,7 @@ class snake(object):
         self.dirnx = 1
         self.dirny = 0
 
-        self.currdir  = 0
+        self.currdir  = 1
         self.directions = {     0: (0, 1),
                                 1: (1, 0),
                                 2: (0, -1),
@@ -61,7 +62,8 @@ class snake(object):
 
     def move(self):
 
-        global debug_flag
+        global debug_flag, cycles
+
         if debug_flag:
             key_flag = True
             while key_flag:
@@ -69,49 +71,57 @@ class snake(object):
                     if event.type == pygame.QUIT:
                         pygame.quit()
 
-                    keys = pygame.key.get_pressed()
+                    if event.type == pygame.KEYDOWN:
+                        #print("f")
+                        key_flag = False
 
-                    for key in keys:
-                        if keys[pygame.K_LEFT]:
-                            self.currdir = (self.currdir - 1) % 4
-                            self.turn( self.directions[self.currdir][0] , self.directions[self.currdir][1] )  # New code
-
-                        elif keys[pygame.K_RIGHT]:
+                        if event.key == pygame.K_LEFT:
+                            #print("l")
                             self.currdir = (self.currdir + 1) % 4
                             self.turn( self.directions[self.currdir][0] , self.directions[self.currdir][1] )  # New code
 
-                        elif keys[pygame.K_d]:
+                        if event.key == pygame.K_RIGHT:
+                            #print("r")
+                            self.currdir = (self.currdir - 1) % 4
+                            self.turn( self.directions[self.currdir][0] , self.directions[self.currdir][1] )  # New code
+
+                        if event.key == pygame.K_d:
+                            #print("d")
                             debug_flag = False
 
-                        elif keys[pygame.K_q]:
-                            s.reset((10, 10))
+                        if event.key == pygame.K_q:
+                            #print("s")
+                            s.reset((9, 9))
                             cycles = 0
 
-                    if sum(list(keys)):
-                        key_flag = False
         else:
-
-            keys = pygame.key.get_pressed()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
 
                 if event.type == pygame.KEYDOWN:
-                    if keys[pygame.K_LEFT]:
-                        self.currdir = (self.currdir - 1) % 4
-                        self.turn( self.directions[self.currdir][0] , self.directions[self.currdir][1] )  # New code
+                    #print("f")
 
-                    if keys[pygame.K_RIGHT]:
+                    if event.key == pygame.K_LEFT:
+                        #print("l")
                         self.currdir = (self.currdir + 1) % 4
                         self.turn( self.directions[self.currdir][0] , self.directions[self.currdir][1] )  # New code
 
-                    if keys[pygame.K_d]:
+                    if event.key == pygame.K_RIGHT:
+                        #print("r")
+                        self.currdir = (self.currdir - 1) % 4
+                        self.turn( self.directions[self.currdir][0] , self.directions[self.currdir][1] )  # New code
+
+                    if event.key == pygame.K_d:
+                        #print("d")
                         debug_flag = True
 
-                    if keys[pygame.K_q]:
-                        s.reset((10, 10))
+                    if event.key == pygame.K_q:
+                        #print("s")
+                        s.reset((9, 9))
                         cycles = 0
+
 
         for i, c in enumerate(self.body):
             p = c.pos[:]
@@ -171,7 +181,7 @@ class SnaKI(object):
     ####
 
     dist = {"block" : {"fw" : 0, "rg" : 0, "le" : 0}, \
-            "food" : {"fw" : 0, "rg" : 0, "be" : 0, "le" : 0, "dist": 0}}
+            "food" : {"fw" : 0, "rg" : 0, "be" : 0, "le" : 0}}
     
     fileinterface = {}
 
@@ -222,9 +232,9 @@ class SnaKI(object):
             elif s.head.pos[1] > snack.pos[1] and s.head.pos[0] >= snack.pos[0]:
                 ki.dist["food"]["rg"] = True
 
-        ki.dist["food"]["dist"] = math.sqrt(pow(abs(s.head.pos[0]-snack.pos[0]), 2) \
+        ki.dist["dist"] = math.sqrt(pow(abs(s.head.pos[0]-snack.pos[0]), 2) \
                                             +pow(abs(s.head.pos[1]-snack.pos[1]), 2))
-        print(ki.dist["food"]["dist"])
+        #print(ki.dist["dist"])
 
 
 
@@ -331,7 +341,7 @@ def write_file():
 
 def main():
     global width, rows, s, snack, font, titlefont, ki, debug_flag, cycles
-    debug_flag = False
+    debug_flag = True
     reset_flag = 0
     
     width = 500
@@ -359,7 +369,7 @@ def main():
 
         cycles = cycles + 1
 
-        clock.tick(10)
+
         s.move()
         ki.get_blocks()
         ki.get_foodquad()
@@ -380,7 +390,7 @@ def main():
 
                 print("Score: ", len(s.body))
                 #message_box("You Lost!", "Play again...")
-                s.reset((10, 10))
+                s.reset((9, 9))
                 cycles = 0
                 snack = cube(randomSnack(rows, s), color=(0, 255, 0))
                 break
@@ -391,8 +401,9 @@ def main():
         dbgout["Cycles"] = cycles
          
         dbgout["dirx"] = s.head.dirnx
-
-        dbgout["diry"] = s.head.dirny    
+        dbgout["diry"] = s.head.dirny
+        dbgout["blocks"] = ki.dist['block']   
+        dbgout["food"] = ki.dist['food']  
 
         #update the interfacetextfile
         ki.fileinterface.update([('cycles', cycles)])
@@ -403,6 +414,7 @@ def main():
         update_dbg_view(win, dbgout)
         write_file()
         pygame.display.update()
+        clock.tick(20)
     pass
 
 
