@@ -21,13 +21,13 @@ from keras.utils import plot_model
 
 classes = 3
 batch_size = 7
-population = 100
+population = 50
 generations = 100
-threshold = 2000
+threshold = 5000
 
 glob_gen = -1
 
-logfname = "log-" + time.strftime("%Y%m%d-%H%M%S") + ".txt"
+logfname = "log-" + time.strftime("%Y%m%d-%H%M%S")
 
 class KISnake():
 
@@ -95,6 +95,9 @@ class KISnake():
         else:
             scoredist = -2
 
+        if (self.distance == 1):
+            scoredist = scoredist + 5
+
         self.fitness = self.fitness + scoredist
         #print(self.fitness)
 
@@ -102,14 +105,16 @@ class KISnake():
 
     def get_fitness(self):
 
-        ret = self.fitness + ((self.dist['length'] - 1) * 100) + (self.lastcycle - self.lastfoodcycle)
-        self.returnfitness = ret
         self.fitnesslength = self.dist['length']
-
+        ret = self.fitness + ((self.fitnesslength - 1) * 500) + (self.lastcycle - self.lastfoodcycle)
+        self.returnfitness = ret
+        
         #print(f"Fitness Returned: {ret}\n")
         return ret
 
     def play_game(self, model):
+
+        global glob_gen
 
         while True:
             self.read_file()
@@ -161,7 +166,7 @@ class KISnake():
         self.gaming = False
         print(f"Cycles: {self.lastcycle}, Fitness: {self.returnfitness}, Length: {self.fitnesslength}")
 
-        with open(logfname, "a+") as file_object:
+        with open(f"{logfname}_{glob_gen}.txt", "a") as file_object:
             file_object.write(f"{self.fitnesslength}, {self.lastcycle}, {self.returnfitness}, ")
                     
         self.keyboard.press('q')
@@ -178,7 +183,7 @@ class KISnake():
                 glob_gen = gen
                 print ('Generation {}'.format(gen+1))
                 
-                with open(logfname, "a+") as file_object:
+                with open(f"{logfname}_{gen}.txt", "a+") as file_object:
                     # Append text at the end of file
                     file_object.write(f"Generation: {gen+1}\n")
 
@@ -210,10 +215,10 @@ def serve_model(epochs, units1, act1, units2, act2, classes, act3, loss, opt, su
 
 class Network():
     def __init__(self):
-        self._epochs = np.random.randint(1, 15)
+        self._epochs = np.random.randint(1, 255)
 
-        self._units1 = np.random.randint(1, 14)
-        self._units2 = np.random.randint(1, 50)
+        self._units1 = np.random.randint(1, 255)
+        self._units2 = np.random.randint(1, 255)
 
         self._act1 = random.choice(['sigmoid', 'relu', 'softmax', 'tanh', 'elu', 'selu', 'linear'])
         self._act2 = random.choice(['sigmoid', 'relu', 'softmax', 'tanh', 'elu', 'selu', 'linear'])
@@ -247,6 +252,7 @@ def init_networks(population):
     return [Network() for _ in range(population)]
 
 def fitness(networks):
+    global glob_gen
     i=0
     for network in networks:
         i=i+1
@@ -261,14 +267,16 @@ def fitness(networks):
         opt = hyperparams['optimizer']
 
         try:
+            #print("Serve Model")
             model = serve_model(epochs, units1, act1, units2, act2, classes, act3, loss, opt)
+            #print("Served Model")
             #plot_model(model, to_file=f'{glob_gen}_{i}_model.png', show_shapes=True, show_layer_names=False)
             accuracy = ki.play_game(model)
 
             network._accuracy = accuracy
-            print ('Accuracy: {}'.format(network._accuracy))
+            #print ('Accuracy: {}'.format(network._accuracy))
 
-            with open(logfname, "a+") as file_object:
+            with open(f"{logfname}_{glob_gen}.txt", "a+") as file_object:
                 # Append text at the end of file
                 file_object.write(f"{hyperparams}\n")
 
@@ -285,21 +293,24 @@ def selection(networks):
 
 def crossover(networks):
     offspring = []
-    for _ in range(int(population * 0.25)):
+    for _ in range(int(population * 0.25) + 1):
         parent1 = random.choice(networks)
         parent2 = random.choice(networks)
         child1 = Network()
         child2 = Network()
 
         # Crossing over parent hyper-params
-        child1._epochs = int((parent1._epochs*4 + parent2._epochs*2)/6)
-        child2._epochs = int((parent1._epochs*2 + parent2._epochs*4)/6)
+        child1._epochs = int(parent1._epochs & 0x0f) + int(parent2._epochs & 0xf0)	        
+        child2._epochs = int(parent1._epochs & 0xf0) + int(parent2._epochs & 0x0f)	
 
-        child1._units1 = int((parent1._units1*4 + parent2._units1*2)/6)
-        child2._units1 = int((parent1._units1*2 + parent2._units1*4)/6)
-
-        child1._units2 = int((parent1._units2*4 + parent2._units2*2)/6)
-        child2._units2 = int((parent1._units2*2 + parent2._units2*4)/6)
+        print(f"1: {parent1._epochs} + {parent2._epochs} = {child1._epochs}")
+        print(f"2: {parent1._epochs} + {parent2._epochs} = {child2._epochs}")        
+        
+        child1._units1 = int(parent1._units1 & 0x0f) + int(parent2._units1 & 0xf0)	        
+        child2._units1 = int(parent1._units1 & 0xf0) + int(parent2._units1 & 0x0f)	        
+        
+        child1._units2 = int(parent1._units2 & 0x0f) + int(parent2._units2 & 0xf0)	    
+        child2._units2 = int(parent1._units2 & 0xf0) + int(parent2._units2 & 0x0f)
 
         child1._act1 = parent2._act2
         child2._act1 = parent1._act2
@@ -313,8 +324,8 @@ def crossover(networks):
         offspring.append(child1)
         offspring.append(child2)
 
-        networks.extend(offspring)
-
+    networks.extend(offspring)
+    networks = networks[:population]
     return networks
 
 def mutate(networks):
@@ -335,7 +346,7 @@ def kimain():
         glob_gen = gen
         print ('Generation {}'.format(gen+1))
 
-        with open(logfname, "a+") as file_object:
+        with open(f"{logfname}_{gen}.txt", "a+") as file_object:
             # Append text at the end of file
             file_object.write(f"Generation: {gen+1}\n")
 
