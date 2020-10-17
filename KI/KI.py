@@ -1,5 +1,6 @@
 from pynput.keyboard import Key, Controller
 import json
+import math
 
 import time
 
@@ -24,6 +25,10 @@ batch_size = 7
 population = 50
 generations = 100
 threshold = 5000
+current_index = 0
+last_index = 0
+index_counter_left = 0
+index_counter_right = 0
 
 glob_gen = -1
 
@@ -70,24 +75,50 @@ class KISnake():
         self.keyboard.release('q')
 
     def out2keys(self):
-
+        global current_index
         idx = np.argmax(self.output)
 
         if idx == 0:
             #print("f")
             self.keyboard.press('f')
+            current_index = 0
             pass
         elif idx == 1:
             self.keyboard.press(Key.left)
+            current_index = 1
             #print("left")
         elif idx == 2:
             self.keyboard.press(Key.right)
+            current_index = 2
             #print("right")
         else:
             print("ERROR - SOMETHING Went wrong")
 
     def calc_fitness(self):
         scoredist = 0
+        scorecircle = 0
+
+        global last_index
+        global index_counter_left
+        global index_counter_right
+
+        if current_index == last_index:
+            if current_index == 1:
+                index_counter_left = index_counter_left + 1
+                if index_counter_left == 3:
+                    scorecircle = -10
+                    index_counter_left = 0
+            elif current_index == 2:
+                index_counter_right = index_counter_right + 1
+                if index_counter_right == 3:
+                    scorecircle = -10
+                    index_counter_right = 0
+        elif current_index != last_index and current_index != 0:
+            index_counter_left = 0
+            index_counter_right = 0
+        last_index = current_index
+
+        #print(last_index, index_counter_left, index_counter_right, scorecircle)
 
         #print(f"last:{self.lastdistance} dist: {self.distance}")
         if (self.lastdistance > self.distance):
@@ -95,10 +126,13 @@ class KISnake():
         else:
             scoredist = -2
 
-        if (self.distance == 1):
+        if((self.distance == 1 and self.lastdistance != math.sqrt(2)) or \
+            (self.distance == math.sqrt(2) and self.lastdistance != 1)):
             scoredist = scoredist + 5
+        print(scoredist)
 
-        self.fitness = self.fitness + scoredist
+
+        self.fitness = self.fitness + scoredist + scorecircle
         #print(self.fitness)
 
         self.lastdistance = self.distance
