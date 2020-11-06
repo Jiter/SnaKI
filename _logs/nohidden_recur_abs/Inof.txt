@@ -1,0 +1,56 @@
+Population's average fitness: -15757.26000 stdev: 30496.91600
+Best fitness: 15827.00000 - size: (15, 18) - species 10 - id 13477
+Average adjusted fitness: 0.615
+Mean genetic distance 2.174, standard deviation 0.534
+Population of 50 members in 2 species:
+   ID   age  size  fitness  adj fit  stag
+  ====  ===  ====  =======  =======  ====
+    10  116    25  15827.0    0.653   112
+    12   56    25   6031.0    0.577    37
+Total extinctions: 0
+Generation time: 85.707 sec (77.157 average)
+
+Best genome:
+Key: 13477
+Fitness: 15827
+Nodes:
+        0 DefaultNodeGene(key=0, bias=-0.6631210107544014, response=1.0, activation=abs, aggregation=sum)
+        1 DefaultNodeGene(key=1, bias=-2.1334049800829042, response=1.0, activation=abs, aggregation=sum)
+        2 DefaultNodeGene(key=2, bias=4.025711012553231, response=1.0, activation=abs, aggregation=sum)
+        1459 DefaultNodeGene(key=1459, bias=1.0893047284395845, response=1.0, activation=abs, aggregation=sum)
+        1765 DefaultNodeGene(key=1765, bias=1.7751675175834376, response=1.0, activation=abs, aggregation=sum)
+        1835 DefaultNodeGene(key=1835, bias=-1.7761624299045597, response=1.0, activation=abs, aggregation=sum)
+        2124 DefaultNodeGene(key=2124, bias=5.586036810099971, response=1.0, activation=abs, aggregation=sum)
+        2322 DefaultNodeGene(key=2322, bias=-0.03124216047353401, response=1.0, activation=abs, aggregation=sum)
+        2359 DefaultNodeGene(key=2359, bias=-1.47475398749843, response=1.0, activation=abs, aggregation=sum)
+        2376 DefaultNodeGene(key=2376, bias=-0.6970325828180077, response=1.0, activation=abs, aggregation=sum)
+        2435 DefaultNodeGene(key=2435, bias=3.9326867393211407, response=1.0, activation=abs, aggregation=sum)
+        2448 DefaultNodeGene(key=2448, bias=1.9864883013538692, response=1.0, activation=abs, aggregation=sum)
+        2491 DefaultNodeGene(key=2491, bias=0.8450853559371087, response=1.0, activation=abs, aggregation=sum)
+        2554 DefaultNodeGene(key=2554, bias=1.105991667596417, response=1.0, activation=abs, aggregation=sum)
+        2617 DefaultNodeGene(key=2617, bias=2.0619660524010697, response=1.0, activation=abs, aggregation=sum)
+Connections:
+        DefaultConnectionGene(key=(-7, 1459), weight=7.422584178085466, enabled=True)     
+        DefaultConnectionGene(key=(-5, 2491), weight=-0.09074532023698856, enabled=True)  
+        DefaultConnectionGene(key=(-3, 0), weight=0.3457311663636248, enabled=True)       
+        DefaultConnectionGene(key=(-3, 1), weight=-9.273860011933579, enabled=True)       
+        DefaultConnectionGene(key=(-3, 1765), weight=1.5903791341270213, enabled=False)   
+        DefaultConnectionGene(key=(-3, 2359), weight=-0.7802925644477084, enabled=True)   
+        DefaultConnectionGene(key=(-3, 2435), weight=1.7893912151247617, enabled=True)    
+        DefaultConnectionGene(key=(-3, 2448), weight=0.2862142041358716, enabled=True)    
+        DefaultConnectionGene(key=(-3, 2554), weight=2.6942120873721156, enabled=True)    
+        DefaultConnectionGene(key=(-3, 2617), weight=0.20755044958635877, enabled=True)   
+        DefaultConnectionGene(key=(-2, 1835), weight=0.4141208344242615, enabled=True)    
+        DefaultConnectionGene(key=(-1, 1), weight=0.49374943122742965, enabled=False)     
+        DefaultConnectionGene(key=(1, 1835), weight=0.10244905961113443, enabled=False)   
+        DefaultConnectionGene(key=(2, 1765), weight=3.2868622340296563, enabled=True)     
+        DefaultConnectionGene(key=(1459, 0), weight=4.11425396802706, enabled=True)       
+        DefaultConnectionGene(key=(1459, 2448), weight=0.1647710803842953, enabled=True)  
+        DefaultConnectionGene(key=(1765, 2), weight=0.3289788737931181, enabled=False)    
+        DefaultConnectionGene(key=(2322, 2), weight=-1.3823412897059155, enabled=True)    
+        DefaultConnectionGene(key=(2359, 1), weight=1.8484154084343147, enabled=True)     
+        DefaultConnectionGene(key=(2435, 1765), weight=-1.0659567232833753, enabled=True) 
+        DefaultConnectionGene(key=(2448, 2435), weight=-0.4365094420991914, enabled=True) 
+        DefaultConnectionGene(key=(2617, 1765), weight=2.4740186640849355, enabled=True)  
+
+Output:

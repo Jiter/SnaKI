@@ -7,8 +7,6 @@ import time
 from keras.models import Sequential
 from keras.layers import Dense
 
-from sklearn.model_selection import train_test_split
-import numpy as np
 
 ####################################################
 
@@ -18,13 +16,14 @@ from keras.models import Sequential
 from keras.layers import Dense, Activation
 from keras.utils import to_categorical
 from keras.utils import plot_model
+from keras.backend import clear_session
 
 
 classes = 3
 batch_size = 7
-population = 50
-generations = 100
-threshold = 5000
+population = 200
+generations = 10000
+threshold = 15000
 current_index = 0
 last_index = 0
 index_counter_left = 0
@@ -106,12 +105,12 @@ class KISnake():
             if current_index == 1:
                 index_counter_left = index_counter_left + 1
                 if index_counter_left == 3:
-                    scorecircle = -10
+                    scorecircle = -1000
                     index_counter_left = 0
             elif current_index == 2:
                 index_counter_right = index_counter_right + 1
                 if index_counter_right == 3:
-                    scorecircle = -10
+                    scorecircle = -1000
                     index_counter_right = 0
         elif current_index != last_index and current_index != 0:
             index_counter_left = 0
@@ -129,7 +128,7 @@ class KISnake():
         if((self.distance == 1 and self.lastdistance != math.sqrt(2)) or \
             (self.distance == math.sqrt(2) and self.lastdistance != 1)):
             scoredist = scoredist + 5
-        print(scoredist)
+        #print(scoredist)
 
 
         self.fitness = self.fitness + scoredist + scorecircle
@@ -230,6 +229,15 @@ class KISnake():
                 print(f"4: {len(networks)}")
                 networks = mutate(networks)
                 print(f"5: {len(networks)}")
+                        
+                for network in networks:
+                    if network._accuracy > threshold:
+                        print ('Threshold met')
+                        print (network.init_hyperparams())
+                        print ('Best accuracy: {}'.format(network._accuracy))
+                        with open(f"BESTLOGS.txt", "a+") as file_object:
+                            # Append text at the end of file
+                            file_object.write(f"Generation: {gen+1}\n")
 
 
 
@@ -301,7 +309,7 @@ def fitness(networks):
         opt = hyperparams['optimizer']
 
         try:
-            #print("Serve Model")
+                #print("Serve Model")
             model = serve_model(epochs, units1, act1, units2, act2, classes, act3, loss, opt)
             #print("Served Model")
             #plot_model(model, to_file=f'{glob_gen}_{i}_model.png', show_shapes=True, show_layer_names=False)
@@ -309,25 +317,27 @@ def fitness(networks):
 
             network._accuracy = accuracy
             #print ('Accuracy: {}'.format(network._accuracy))
+            
+            clear_session()
 
             with open(f"{logfname}_{glob_gen}.txt", "a+") as file_object:
                 # Append text at the end of file
                 file_object.write(f"{hyperparams}\n")
 
         except:
-            network._accuracy = 0
+            network._accuracy = -10e6
             print ('Build failed.')
 
     return networks
 
 def selection(networks):
     networks = sorted(networks, key=lambda network: network._accuracy, reverse=True)
-    networks = networks[:int(0.5 * len(networks))]
+    networks = networks[:int(0.2 * len(networks))]
     return networks
 
 def crossover(networks):
     offspring = []
-    for _ in range(int(population * 0.25) + 1):
+    for _ in range((int(population * 0.2) * 2) + 1):
         parent1 = random.choice(networks)
         parent2 = random.choice(networks)
         child1 = Network()
@@ -365,9 +375,9 @@ def crossover(networks):
 def mutate(networks):
     for network in networks:
         if np.random.uniform(0, 1) <= 0.05:
-            network._epochs += np.random.randint(0,100)
-            network._units1 += np.random.randint(0,100)
-            network._units2 += np.random.randint(0,100)
+            network._epochs += np.random.randint(0,255)
+            network._units1 += np.random.randint(0,255)
+            network._units2 += np.random.randint(0,255)
 
     return networks
 
@@ -404,10 +414,10 @@ def kimain():
 ####################################################
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     
-    ki = KISnake()
+#     ki = KISnake()
 
-    while True:
-        #kimain()
-        ki.main()
+#     while True:
+#         #kimain()
+#         ki.main()

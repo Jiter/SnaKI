@@ -1,0 +1,27 @@
+Population's average fitness: -5787.23232 stdev: 25216.79815
+Best fitness: 33946.00000 - size: (4, 8) - species 5 - id 2985
+
+Best individual in generation 36 meets fitness threshold - complexity: (4, 8)
+
+Best genome:
+Key: 2985
+Fitness: 33946
+Nodes:
+        0 DefaultNodeGene(key=0, bias=4.775886510102119, response=-1.1365394944491607, activation=relu, aggregation=sum)
+        1 DefaultNodeGene(key=1, bias=2.3677221879894135, response=-1.8606433022819358, activation=relu, aggregation=sum)
+        2 DefaultNodeGene(key=2, bias=-1.3747492445739429, response=1.6754733777956836, activation=relu, aggregation=sum)
+        564 DefaultNodeGene(key=564, bias=-3.2111317958666845, response=-0.06854508159172065, activation=relu, aggregation=sum)
+Connections:
+        DefaultConnectionGene(key=(-7, 0), weight=2.3770187589323735, enabled=False)      
+        DefaultConnectionGene(key=(-6, 2), weight=-4.172590423461447, enabled=True)       
+        DefaultConnectionGene(key=(-5, 0), weight=2.9144095728549053, enabled=True)       
+        DefaultConnectionGene(key=(-4, 2), weight=1.9771259634404073, enabled=True)       
+        DefaultConnectionGene(key=(-3, 0), weight=-0.3041001408893157, enabled=True)      
+        DefaultConnectionGene(key=(-3, 1), weight=1.9498440698229476, enabled=False)      
+        DefaultConnectionGene(key=(-3, 2), weight=5.989005193876231, enabled=True)        
+        DefaultConnectionGene(key=(-3, 564), weight=0.8346107445913793, enabled=True)     
+        DefaultConnectionGene(key=(-2, 2), weight=-0.04143324773865, enabled=True)        
+        DefaultConnectionGene(key=(-1, 1), weight=-0.9239280538229228, enabled=False)     
+        DefaultConnectionGene(key=(564, 1), weight=-0.767000125279245, enabled=True)      
+
+Output:

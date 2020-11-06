@@ -198,7 +198,7 @@ class SnaKI(object):
         if s.currdir == 0: # DOWN
             if s.head.pos[0] == snack.pos[0] and s.head.pos[1] < snack.pos[1]:
                 ki.dist["food"]["fw"] = True
-            elif s.head.pos[1] > snack.pos[1]:
+            elif s.head.pos[1] + 1 > snack.pos[1]:
                 ki.dist["food"]["be"] = True
             elif s.head.pos[0] < snack.pos[0] and s.head.pos[1] <= snack.pos[1]:
                 ki.dist["food"]["le"] = True
@@ -207,7 +207,7 @@ class SnaKI(object):
         elif s.currdir == 1: # RIGHT
             if s.head.pos[1] == snack.pos[1] and s.head.pos[0] < snack.pos[0]:
                 ki.dist["food"]["fw"] = True
-            elif s.head.pos[0] > snack.pos[0]:
+            elif s.head.pos[0] + 1 > snack.pos[0]:
                 ki.dist["food"]["be"] = True
             elif s.head.pos[1] > snack.pos[1] and s.head.pos[0] <= snack.pos[0]:
                 ki.dist["food"]["le"] = True
@@ -216,7 +216,7 @@ class SnaKI(object):
         elif s.currdir == 2: # UP
             if s.head.pos[0] == snack.pos[0] and s.head.pos[1] > snack.pos[1]:
                 ki.dist["food"]["fw"] = True
-            elif s.head.pos[1] < snack.pos[1]:
+            elif s.head.pos[1] - 1 < snack.pos[1]:
                 ki.dist["food"]["be"] = True
             elif s.head.pos[0] > snack.pos[0] and s.head.pos[1] >= snack.pos[1]:
                 ki.dist["food"]["le"] = True
@@ -225,7 +225,7 @@ class SnaKI(object):
         elif s.currdir == 3: # LEFT
             if s.head.pos[1] == snack.pos[1] and s.head.pos[0] > snack.pos[0]:
                 ki.dist["food"]["fw"] = True
-            elif s.head.pos[0] < snack.pos[0]:
+            elif s.head.pos[0] - 1 < snack.pos[0]:
                 ki.dist["food"]["be"] = True
             elif s.head.pos[1] < snack.pos[1] and s.head.pos[0] >= snack.pos[0]:
                 ki.dist["food"]["le"] = True
@@ -415,7 +415,7 @@ def main():
         update_dbg_view(win, dbgout)
         write_file()
         pygame.display.update()
-        clock.tick(20)
+        clock.tick(1000)
     pass
 
 
