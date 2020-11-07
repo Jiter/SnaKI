@@ -94,12 +94,12 @@ def calc_fitness():
         if current_index == 1:
             index_counter_left = index_counter_left + 1
             if index_counter_left == 3:
-                scorecircle = -1000
+                scorecircle = -10
                 index_counter_left = 0
         elif current_index == 2:
             index_counter_right = index_counter_right + 1
             if index_counter_right == 3:
-                scorecircle = -1000
+                scorecircle = -10
                 index_counter_right = 0
     elif current_index != last_index and current_index != 0:
         index_counter_left = 0

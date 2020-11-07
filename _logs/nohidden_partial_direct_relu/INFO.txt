@@ -1,0 +1,27 @@
+Population's average fitness: 6460.63000 stdev: 8874.06991
+Best fitness: 31893.00000 - size: (3, 4) - species 33 - id 22726
+Average adjusted fitness: 0.218
+Mean genetic distance 2.136, standard deviation 0.698
+Population of 100 members in 2 species:
+   ID   age  size  fitness  adj fit  stag
+  ====  ===  ====  =======  =======  ====
+    26   91    49  25911.0    0.195    10
+    33   23    51  31893.0    0.241     1
+Total extinctions: 0
+Generation time: 329.984 sec (296.159 average)
+Saving checkpoint to neat-checkpoint-299
+
+Best genome:
+Key: 22726
+Fitness: 31893
+Nodes:
+        0 DefaultNodeGene(key=0, bias=-0.44902921093241144, response=0.6148257707057707, activation=relu, aggregation=sum)
+        1 DefaultNodeGene(key=1, bias=-2.7256858234740453, response=1.1756704209028757, activation=relu, aggregation=sum)
+        2 DefaultNodeGene(key=2, bias=-0.929519491119176, response=-1.4083751377426923, activation=relu, aggregation=sum)
+Connections:
+        DefaultConnectionGene(key=(-6, 2), weight=5.378203235642541, enabled=True)        
+        DefaultConnectionGene(key=(-5, 1), weight=3.8553276916722643, enabled=True)       
+        DefaultConnectionGene(key=(-3, 2), weight=-4.675741946022531, enabled=True)       
+        DefaultConnectionGene(key=(-2, 2), weight=0.8214809317293851, enabled=True)       
+
+Output
