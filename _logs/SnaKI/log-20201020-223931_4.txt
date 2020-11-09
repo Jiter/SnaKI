@@ -1,0 +1,3 @@
+Generation: 5
+1, 7, -189, {'epochs': 174, 'units1': 91, 'act1': 'selu', 'units2': 168, 'act2': 'linear', 'act3': 'selu', 'loss': 'mean_squared_error', 'optimizer': 'adam'}
+1, 10, -186, {'epochs': 222, 'units1': 219, 'act1': 'selu', 'units2': 24, 'act2': 'selu', 'act3': 'selu', 'loss': 'mean_squared_error', 'optimizer': 'adamax'}

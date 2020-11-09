@@ -1,0 +1,5 @@
+Generation: 2
+1, 9, -212, {'epochs': 45, 'units1': 252, 'act1': 'tanh', 'units2': 38, 'act2': 'tanh', 'act3': 'relu', 'loss': 'mean_squared_error', 'optimizer': 'adagrad'}
+1, 9, -212, {'epochs': 79, 'units1': 65, 'act1': 'tanh', 'units2': 222, 'act2': 'sigmoid', 'act3': 'linear', 'loss': 'categorical_crossentropy', 'optimizer': 'adamax'}
+1, 26, -199, {'epochs': 47, 'units1': 241, 'act1': 'tanh', 'units2': 46, 'act2': 'tanh', 'act3': 'tanh', 'loss': 'binary_crossentropy', 'optimizer': 'adadelta'}
+1, 200, -65900, {'epochs': 77, 'units1': 76, 'act1': 'sigmoid', 'units2': 214, 'act2': 'tanh', 'act3': 'sigmoid', 'loss': 'categorical_crossentropy', 'optimizer': 'adagrad'}

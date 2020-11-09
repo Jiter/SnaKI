@@ -1,0 +1,9 @@
+Generation: 1
+1, 185, -109, {'epochs': 5, 'units1': 7, 'act1': 'sigmoid', 'units2': 27, 'act2': 'sigmoid', 'act3': 'tanh', 'loss': 'categorical_crossentropy', 'optimizer': 'adadelta'}
+1, 21, -194, {'epochs': 9, 'units1': 11, 'act1': 'elu', 'units2': 39, 'act2': 'sigmoid', 'act3': 'tanh', 'loss': 'binary_crossentropy', 'optimizer': 'sgd'}
+1, 9, -212, {'epochs': 8, 'units1': 10, 'act1': 'sigmoid', 'units2': 17, 'act2': 'sigmoid', 'act3': 'softmax', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'adadelta'}
+1, 52, -177, {'epochs': 2, 'units1': 2, 'act1': 'relu', 'units2': 29, 'act2': 'tanh', 'act3': 'linear', 'loss': 'mean_absolute_error', 'optimizer': 'adamax'}
+1, 14, -196, {'epochs': 5, 'units1': 11, 'act1': 'relu', 'units2': 40, 'act2': 'tanh', 'act3': 'elu', 'loss': 'binary_crossentropy', 'optimizer': 'adam'}
+1, 41, -181, {'epochs': 11, 'units1': 10, 'act1': 'sigmoid', 'units2': 6, 'act2': 'softmax', 'act3': 'sigmoid', 'loss': 'mean_squared_error', 'optimizer': 'adamax'}
+2, 222, 194, {'epochs': 12, 'units1': 13, 'act1': 'selu', 'units2': 10, 'act2': 'relu', 'act3': 'selu', 'loss': 'binary_crossentropy', 'optimizer': 'adagrad'}
+1, 200, 96, {'epochs': 12, 'units1': 8, 'act1': 'selu', 'units2': 48, 'act2': 'sigmoid', 'act3': 'linear', 'loss': 'mean_squared_error', 'optimizer': 'rmsprop'}

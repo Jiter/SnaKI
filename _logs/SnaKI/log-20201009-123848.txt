@@ -1,0 +1,3 @@
+Generation: 1
+1, 10, -14.0, {'epochs': 10, 'units1': 39, 'act1': 'elu', 'units2': 34, 'act2': 'linear', 'act3': 'sigmoid', 'loss': 'mean_squared_error', 'optimizer': 'adam'}
+1, 200, -50.5, {'epochs': 7, 'units1': 35, 'act1': 'relu', 'units2': 3, 'act2': 'relu', 'act3': 'softmax', 'loss': 'mean_absolute_error', 'optimizer': 'adagrad'}

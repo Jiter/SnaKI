@@ -1,0 +1,5 @@
+Generation: 1
+1, 200, 114, {'epochs': 132, 'units1': 69, 'act1': 'relu', 'units2': 240, 'act2': 'tanh', 'act3': 'selu', 'loss': 'categorical_crossentropy', 'optimizer': 'adam'}
+1, 19, -222, {'epochs': 138, 'units1': 177, 'act1': 'tanh', 'units2': 223, 'act2': 'selu', 'act3': 'relu', 'loss': 'binary_crossentropy', 'optimizer': 'adadelta'}
+1, 200, 99, {'epochs': 205, 'units1': 190, 'act1': 'elu', 'units2': 29, 'act2': 'softmax', 'act3': 'softmax', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'sgd'}
+1, 200, 172, {'epochs': 165, 'units1': 116, 'act1': 'relu', 'units2': 68, 'act2': 'tanh', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'rmsprop'}

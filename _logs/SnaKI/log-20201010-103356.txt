@@ -1,0 +1,2 @@
+Generation: 1
+1, 9, -220, {'epochs': 9, 'units1': 28, 'act1': 'elu', 'units2': 26, 'act2': 'linear', 'act3': 'tanh', 'loss': 'mean_squared_error', 'optimizer': 'adam'}

@@ -1,0 +1,2 @@
+Generation: 1
+1, 200, -128, {'epochs': 14, 'units1': 32, 'act1': 'relu', 'units2': 21, 'act2': 'elu', 'act3': 'tanh', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'nadam'}

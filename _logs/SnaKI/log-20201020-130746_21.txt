@@ -1,0 +1,7 @@
+Generation: 22
+1, 20, -193, {'epochs': 208, 'units1': 48, 'act1': 'elu', 'units2': 52, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'adadelta'}
+1, 200, -295, {'epochs': 208, 'units1': 48, 'act1': 'elu', 'units2': 52, 'act2': 'elu', 'act3': 'elu', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'adam'}
+1, 10, -213, {'epochs': 215, 'units1': 37, 'act1': 'elu', 'units2': 83, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_squared_error', 'optimizer': 'adam'}
+1, 9, -212, {'epochs': 227, 'units1': 85, 'act1': 'elu', 'units2': 50, 'act2': 'elu', 'act3': 'elu', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'rmsprop'}
+1, 10, -213, {'epochs': 296, 'units1': 107, 'act1': 'elu', 'units2': 52, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'adamax'}
+1, 200, 119, {'epochs': 208, 'units1': 48, 'act1': 'elu', 'units2': 52, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'adagrad'}

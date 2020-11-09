@@ -1,0 +1,3 @@
+Generation: 1
+1, 9, -12.5, {'epochs': 7, 'units1': 8, 'act1': 'selu', 'units2': 47, 'act2': 'linear', 'act3': 'tanh', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'adagrad'}
+1, 9, -12.5, {'epochs': 14, 'units1': 26, 'act1': 'softmax', 'units2': 3, 'act2': 'softmax', 'act3': 'elu', 'loss': 'categorical_crossentropy', 'optimizer': 'adam'}

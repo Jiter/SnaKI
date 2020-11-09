@@ -1,0 +1,14 @@
+Generation: 28
+4, 238, 968, {'epochs': 208, 'units1': 64, 'act1': 'elu', 'units2': 116, 'act2': 'elu', 'act3': 'elu', 'loss': 'binary_crossentropy', 'optimizer': 'sgd'}
+5, 70, 1809, {'epochs': 207, 'units1': 57, 'act1': 'elu', 'units2': 85, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'nadam'}
+1, 12, -180, {'epochs': 205, 'units1': 62, 'act1': 'elu', 'units2': 29, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_squared_error', 'optimizer': 'adadelta'}
+1, 200, -545, {'epochs': 181, 'units1': 62, 'act1': 'elu', 'units2': 33, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_squared_error', 'optimizer': 'adadelta'}
+1, 200, 103, {'epochs': 192, 'units1': 48, 'act1': 'elu', 'units2': 20, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'nadam'}
+1, 200, -571, {'epochs': 189, 'units1': 14, 'act1': 'elu', 'units2': 29, 'act2': 'elu', 'act3': 'elu', 'loss': 'categorical_crossentropy', 'optimizer': 'adagrad'}
+1, 21, -194, {'epochs': 176, 'units1': 48, 'act1': 'elu', 'units2': 36, 'act2': 'elu', 'act3': 'elu', 'loss': 'categorical_crossentropy', 'optimizer': 'adadelta'}
+1, 9, -212, {'epochs': 181, 'units1': 14, 'act1': 'elu', 'units2': 17, 'act2': 'elu', 'act3': 'elu', 'loss': 'categorical_crossentropy', 'optimizer': 'adagrad'}
+1, 9, -212, {'epochs': 192, 'units1': 48, 'act1': 'elu', 'units2': 20, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_squared_error', 'optimizer': 'adagrad'}
+2, 87, 339, {'epochs': 189, 'units1': 14, 'act1': 'elu', 'units2': 29, 'act2': 'elu', 'act3': 'elu', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'adam'}
+1, 200, -574, {'epochs': 198, 'units1': 55, 'act1': 'elu', 'units2': 40, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'adamax'}
+1, 18, -204, {'epochs': 189, 'units1': 14, 'act1': 'elu', 'units2': 29, 'act2': 'elu', 'act3': 'elu', 'loss': 'binary_crossentropy', 'optimizer': 'sgd'}
+1, 200, -514, {'epochs': 192, 'units1': 48, 'act1': 'elu', 'units2': 20, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_squared_error', 'optimizer': 'nadam'}

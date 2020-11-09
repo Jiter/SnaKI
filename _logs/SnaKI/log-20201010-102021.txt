@@ -1,0 +1,5 @@
+Generation: 1
+1, 9, -192.5, {'epochs': 6, 'units1': 3, 'act1': 'linear', 'units2': 13, 'act2': 'relu', 'act3': 'selu', 'loss': 'mean_squared_error', 'optimizer': 'adadelta'}
+1, 107, -227.0, {'epochs': 1, 'units1': 6, 'act1': 'sigmoid', 'units2': 11, 'act2': 'sigmoid', 'act3': 'sigmoid', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'adam'}
+1, 10, -216.5, {'epochs': 8, 'units1': 18, 'act1': 'selu', 'units2': 21, 'act2': 'tanh', 'act3': 'linear', 'loss': 'mean_squared_error', 'optimizer': 'adam'}
+7, 51, 427.0, {'epochs': 5, 'units1': 23, 'act1': 'linear', 'units2': 39, 'act2': 'tanh', 'act3': 'selu', 'loss': 'mean_absolute_error', 'optimizer': 'nadam'}

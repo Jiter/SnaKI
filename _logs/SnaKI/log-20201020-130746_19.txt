@@ -1,0 +1,8 @@
+Generation: 20
+1, 9, -180, {'epochs': 208, 'units1': 48, 'act1': 'elu', 'units2': 52, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'adamax'}
+1, 19, -195, {'epochs': 201, 'units1': 94, 'act1': 'elu', 'units2': 37, 'act2': 'elu', 'act3': 'elu', 'loss': 'categorical_crossentropy', 'optimizer': 'adam'}
+1, 9, -212, {'epochs': 239, 'units1': 80, 'act1': 'elu', 'units2': 93, 'act2': 'elu', 'act3': 'elu', 'loss': 'categorical_crossentropy', 'optimizer': 'adagrad'}
+6, 51, 2351, {'epochs': 183, 'units1': 84, 'act1': 'elu', 'units2': 57, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'nadam'}
+1, 9, -197, {'epochs': 192, 'units1': 14, 'act1': 'elu', 'units2': 105, 'act2': 'elu', 'act3': 'elu', 'loss': 'categorical_crossentropy', 'optimizer': 'adamax'}
+1, 30, -197, {'epochs': 208, 'units1': 48, 'act1': 'elu', 'units2': 52, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'nadam'}
+1, 200, 119, {'epochs': 208, 'units1': 48, 'act1': 'elu', 'units2': 52, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'adadelta'}

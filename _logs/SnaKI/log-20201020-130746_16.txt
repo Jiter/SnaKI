@@ -1,0 +1,16 @@
+Generation: 17
+1, 200, -466, {'epochs': 77, 'units1': 68, 'act1': 'elu', 'units2': 187, 'act2': 'elu', 'act3': 'elu', 'loss': 'binary_crossentropy', 'optimizer': 'nadam'}
+1, 200, -574, {'epochs': 48, 'units1': 64, 'act1': 'elu', 'units2': 100, 'act2': 'linear', 'act3': 'elu', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'adam'}
+1, 200, 119, {'epochs': 26, 'units1': 23, 'act1': 'elu', 'units2': 127, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'adamax'}
+1, 200, -574, {'epochs': 180, 'units1': 208, 'act1': 'selu', 'units2': 117, 'act2': 'tanh', 'act3': 'selu', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'adagrad'}
+1, 11, -211, {'epochs': 48, 'units1': 64, 'act1': 'elu', 'units2': 100, 'act2': 'linear', 'act3': 'elu', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'adam'}
+2, 18, 308, {'epochs': 250, 'units1': 90, 'act1': 'elu', 'units2': 39, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'adamax'}
+1, 200, 102, {'epochs': 211, 'units1': 56, 'act1': 'elu', 'units2': 56, 'act2': 'elu', 'act3': 'elu', 'loss': 'categorical_crossentropy', 'optimizer': 'sgd'}
+5, 42, 1846, {'epochs': 16, 'units1': 16, 'act1': 'elu', 'units2': 116, 'act2': 'elu', 'act3': 'elu', 'loss': 'categorical_crossentropy', 'optimizer': 'adadelta'}
+1, 11, -211, {'epochs': 186, 'units1': 7, 'act1': 'elu', 'units2': 31, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_squared_error', 'optimizer': 'adagrad'}
+1, 9, -197, {'epochs': 189, 'units1': 4, 'act1': 'elu', 'units2': 27, 'act2': 'elu', 'act3': 'elu', 'loss': 'categorical_crossentropy', 'optimizer': 'sgd'}
+1, 19, -198, {'epochs': 64, 'units1': 64, 'act1': 'elu', 'units2': 180, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'rmsprop'}
+1, 200, 107, {'epochs': 186, 'units1': 7, 'act1': 'elu', 'units2': 31, 'act2': 'elu', 'act3': 'elu', 'loss': 'categorical_crossentropy', 'optimizer': 'nadam'}
+2, 9, 301, {'epochs': 16, 'units1': 16, 'act1': 'elu', 'units2': 116, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'nadam'}
+1, 200, -574, {'epochs': 48, 'units1': 64, 'act1': 'linear', 'units2': 100, 'act2': 'elu', 'act3': 'linear', 'loss': 'mean_squared_error', 'optimizer': 'adam'}
+1, 22, -195, {'epochs': 220, 'units1': 6, 'act1': 'elu', 'units2': 52, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_squared_error', 'optimizer': 'rmsprop'}

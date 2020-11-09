@@ -1,0 +1,2 @@
+Generation: 1
+1, 200, -53.0, {'epochs': 1, 'units1': 26, 'act1': 'linear', 'units2': 4, 'act2': 'sigmoid', 'act3': 'linear', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'adadelta'}

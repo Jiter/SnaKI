@@ -1,0 +1,4 @@
+Generation: 28
+1, 21, -197, {'epochs': 237, 'units1': 219, 'act1': 'elu', 'units2': 171, 'act2': 'tanh', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'sgd'}
+1, 12, -212, {'epochs': 233, 'units1': 219, 'act1': 'tanh', 'units2': 174, 'act2': 'elu', 'act3': 'tanh', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'adam'}
+4, 298, 1044, {'epochs': 9, 'units1': 155, 'act1': 'linear', 'units2': 254, 'act2': 'tanh', 'act3': 'linear', 'loss': 'mean_absolute_error', 'optimizer': 'adam'}

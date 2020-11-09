@@ -1,0 +1,5 @@
+Generation: 1
+1, 9, -3.0, {'epochs': 10, 'units1': 27, 'act1': 'softmax', 'units2': 1, 'act2': 'relu', 'act3': 'softmax', 'loss': 'mean_squared_error', 'optimizer': 'adadelta'}
+1, 237, 394.5, {'epochs': 12, 'units1': 9, 'act1': 'elu', 'units2': 22, 'act2': 'relu', 'act3': 'linear', 'loss': 'mean_squared_error', 'optimizer': 'sgd'}
+1, 66, -19.5, {'epochs': 9, 'units1': 40, 'act1': 'elu', 'units2': 41, 'act2': 'softmax', 'act3': 'relu', 'loss': 'mean_squared_error', 'optimizer': 'adam'}
+1, 9, -7.5, {'epochs': 1, 'units1': 23, 'act1': 'softmax', 'units2': 5, 'act2': 'softmax', 'act3': 'softmax', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'nadam'}

@@ -1,0 +1,6 @@
+Generation: 1
+1, 200, -101, {'epochs': 1, 'units1': 45, 'act1': 'sigmoid', 'units2': 32, 'act2': 'elu', 'act3': 'sigmoid', 'loss': 'mean_absolute_error', 'optimizer': 'adam'}
+2, 21, -93, {'epochs': 14, 'units1': 26, 'act1': 'linear', 'units2': 40, 'act2': 'linear', 'act3': 'relu', 'loss': 'mean_absolute_error', 'optimizer': 'sgd'}
+1, 21, -214, {'epochs': 1, 'units1': 15, 'act1': 'elu', 'units2': 8, 'act2': 'linear', 'act3': 'elu', 'loss': 'categorical_crossentropy', 'optimizer': 'adamax'}
+1, 17, -212, {'epochs': 12, 'units1': 49, 'act1': 'elu', 'units2': 18, 'act2': 'elu', 'act3': 'selu', 'loss': 'mean_squared_error', 'optimizer': 'adam'}
+1, 200, -104, {'epochs': 13, 'units1': 4, 'act1': 'tanh', 'units2': 21, 'act2': 'sigmoid', 'act3': 'sigmoid', 'loss': 'binary_crossentropy', 'optimizer': 'adadelta'}

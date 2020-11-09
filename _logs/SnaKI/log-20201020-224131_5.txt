@@ -1,0 +1,5 @@
+Generation: 6
+1, 200, 83, {'epochs': 56, 'units1': 123, 'act1': 'tanh', 'units2': 39, 'act2': 'selu', 'act3': 'relu', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'rmsprop'}
+1, 19, -195, {'epochs': 18, 'units1': 229, 'act1': 'tanh', 'units2': 204, 'act2': 'elu', 'act3': 'tanh', 'loss': 'sparse_categorical_crossentropy', 'optimizer': 'adadelta'}
+1, 200, -528, {'epochs': 22, 'units1': 237, 'act1': 'tanh', 'units2': 207, 'act2': 'elu', 'act3': 'elu', 'loss': 'mean_absolute_error', 'optimizer': 'adamax'}
+1, 200, 103, {'epochs': 22, 'units1': 237, 'act1': 'elu', 'units2': 207, 'act2': 'tanh', 'act3': 'elu', 'loss': 'categorical_crossentropy', 'optimizer': 'adam'}
