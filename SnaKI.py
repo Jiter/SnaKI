@@ -415,7 +415,8 @@ def main():
         update_dbg_view(win, dbgout)
         write_file()
         pygame.display.update()
-        clock.tick(1000)
+        #clock.tick(1000)
+        clock.tick(50)
     pass
 
 

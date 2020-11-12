@@ -211,46 +211,7 @@ def eval_genomes(genomes, config):
         genome.fitness = returnfitness
 
 
-
-def run(config_file):
-    # Load configuration.
-    config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
-                         neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                         config_file)
-
-    # Create the population, which is the top-level object for a NEAT run.
-    p = neat.Population(config)
-
-    # Add a stdout reporter to show progress in the terminal.
-    p.add_reporter(neat.StdOutReporter(True))
-    stats = neat.StatisticsReporter()
-    p.add_reporter(stats)
-    p.add_reporter(neat.Checkpointer(5))
-
-    # Run for up to 300 generations.
-    winner = p.run(eval_genomes, 300)
-
-    # Save the winner-genome
-    with open("winner.pkl", "wb") as f:
-        pickle.dump(winner, f)
-        f.close()
-
-    # Display the winning genome.
-    print('\nBest genome:\n{!s}'.format(winner))
-
-    # Show output of the most fit genome against training data.
-    print('\nOutput:')
-    winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
-
-    # visualize.draw_net(config, winner, True, node_names=node_names)
-    # visualize.plot_stats(stats, ylog=False, view=True)
-    # visualize.plot_species(stats, view=True)
-
-    # p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-4')
-    # p.run(eval_genomes, 10)
-
-
-'''def replay_genome(config_file):
+def replay_genome(config_file):
     # Load requried NEAT config
     config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, \
                                 neat.DefaultStagnation, config_path)
@@ -266,7 +227,8 @@ def run(config_file):
     genomes = [(1, genome)]
 
     # Call game with only the loaded genome
-    eval_genomes(genomes, config)'''
+    while True:
+        eval_genomes(genomes, config)
 
 
 if __name__ == '__main__':
@@ -276,24 +238,6 @@ if __name__ == '__main__':
     local_dir = os.path.dirname(__file__)
     config_path = os.path.join(local_dir, 'config-feedforward')
     genome_path = os.path.join(local_dir, 'winner.pkl')
-    run(config_path)
-    '''
-    genome_key = 22726
-    enabled = True
-    genome_connections = {(-6, 2): [enabled, 5.378203235642541], (-5, 1): [enabled, 3.8553276916722643], \
-                          (-3, 2): [enabled, -4.675741946022531], (-2, 2): [enabled, 0.8214809317293851]}
-    # genome_connections = {(-6, 2): 5.378203235642541, (-5, 1): 3.8553276916722643,  \
-    # (-3, 2): -4.675741946022531, (-2, 2): 0.8214809317293851}
-    genome_nodes = {0: (-0.44902921093241144, 0.6148257707057707), 1: (-2.7256858234740453, 1.1756704209028757), \
-                    2: (-0.929519491119176, -1.4083751377426923)}
-    best_genome = neat.DefaultGenome(genome_key)
-    config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
-                         neat.DefaultSpeciesSet, neat.DefaultStagnation, config_path)
-    best_genome.create_connection(config, -6, 2)
-    best_genome.connections[-6, 2] = 5.378203235642541
-    best_genome.create_node(2)
-    best_genome.connections(genome_connections)
-    best_genome.nodes = genome_nodes
-    best_genome.fitness = 31893'''
-    #replay_genome(config_path)
+
+    replay_genome(config_path)
 

@@ -10,6 +10,7 @@ import numpy as np
 from pynput.keyboard import Key, Controller
 import math
 import json
+import pickle
 
 import time
 
@@ -194,7 +195,7 @@ def eval_genomes(genomes, config):
                     get_fitness()
                 
                 lastcycle = num
-                
+
         gaming = False
         print(f"Cycles: {lastcycle}, Fitness: {returnfitness}, Length: {fitnesslength}")
 
@@ -205,9 +206,17 @@ def eval_genomes(genomes, config):
 
         keyboard.press('q')
 
-        genome.fitness = returnfitness 
-        
+        genome.fitness = returnfitness
+        #print(returnfitness)
+        if returnfitness > 28000:
+            print("test")
+            winner = genome
+            with open("winner.pkl", "wb") as f:
+                pickle.dump(winner, f)
+                f.close()
+            break
 
+        
 
 def run(config_file):
     # Load configuration.
@@ -226,6 +235,11 @@ def run(config_file):
 
     # Run for up to 300 generations.
     winner = p.run(eval_genomes, 300)
+
+    # Save the winner-genome
+    '''with open("winner.pkl", "wb") as f:
+        pickle.dump(winner, f)
+        f.close()'''
 
     # Display the winning genome.
     print('\nBest genome:\n{!s}'.format(winner))
